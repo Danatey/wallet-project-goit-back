@@ -1,4 +1,4 @@
-const ValidContactName = {
+const ValidUserName = {
   MIN_NAME_LENGTH: 1,
   MAX_NAME_LENGTH: 12,
 };
@@ -16,6 +16,6 @@ const HttpCode = {
 };
 
 module.exports = {
-  ValidContactName,
+  ValidUserName,
   HttpCode,
 };

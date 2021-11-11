@@ -3,25 +3,22 @@ const logger = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
 
-// require("dotenv").config();
-// const USERS_AVATAR = process.env.USERS_AVATAR;
-
-// const contactsRouter = require("./routes/contacts/contacts");
-// const usersRouter = require("./routes/users/users");
-const { HttpCode } = require("./config/constant");
+const transactionsRouter = require("./routes/transactions/transactions");
+const usersRouter = require("./routes/users/users");
+const { HttpCode } = require("./config/contants");
 
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
-// app.use(express.static(USERS_AVATAR));
+// app.use(express.static());
 app.use(helmet());
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json({ limit: 10000 }));
 
 app.use("/api/users", usersRouter);
-app.use("/api/transactions", contactsRouter);
+app.use("/api/transactions", transactionsRouter);
 
 app.use((req, res) => {
   res
