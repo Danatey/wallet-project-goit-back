@@ -1,5 +1,10 @@
 const Transaction = require("../model/transaction");
 
+const listTransactions = async () => {
+  const results = await Transaction.find({});
+  return results;
+};
+
 const addTransaction = async (body) => {
   const result = await Transaction.create(body);
   return result;
@@ -7,4 +12,5 @@ const addTransaction = async (body) => {
 
 module.exports = {
   addTransaction,
+  listTransactions,
 };

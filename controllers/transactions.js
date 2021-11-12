@@ -8,4 +8,9 @@ const createTransaction = async (req, res, next) => {
     .json({ status: "success", code: HttpCode.CREATED, data: { transaction } });
 };
 
-module.exports = { createTransaction };
+const getTransactions = async (req, res) => {
+  const data = await Transaction.listTransactions();
+  res.json({ status: "success", code: HttpCode.OK, data: { ...data } });
+};
+
+module.exports = { createTransaction, getTransactions };

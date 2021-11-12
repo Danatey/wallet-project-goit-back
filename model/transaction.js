@@ -1,11 +1,39 @@
 const { Schema, SchemaTypes, model } = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
+const { TransactionsCategory } = require("../config/contants");
 
 const transactionSchema = new Schema(
   {
+    amount: {
+      type: Number,
+      require: true,
+    },
+    type: {
+      type: String,
+      enum: ["add", "substract"],
+    },
+    category: {
+      type: String,
+      enum: TransactionsCategory,
+      default: TransactionsCategory[0],
+    },
+    date: {
+      type: Number,
+    },
+    day: {
+      type: Number,
+    },
+    month: {
+      type: Number,
+    },
+    year: {
+      type: Number,
+    },
+    balance: {
+      type: Number,
+    },
     comment: {
       type: String,
-      required: [true, "Set text for comment"],
     },
     owner: {
       type: SchemaTypes.ObjectId,
