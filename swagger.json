@@ -544,13 +544,20 @@
       "TransactionResponse": {
         "type": "object",
         "required": [
+          "transactionId",
           "date",
           "type",
           "category",
           "comment",
-          "amount"
+          "amount",
+          "balance"
         ],
         "properties": {
+          "transactionId": {
+            "type": "string",
+            "description": "Transaction's id",
+            "example": "124lkjdfv235"
+          },
           "date": {
             "type": "string",
             "description": "Transaction's create date",
@@ -575,6 +582,11 @@
             "type": "integer",
             "description": "Amount of transaction",
             "example": 2000
+          },
+          "balance": {
+            "type": "integer",
+            "description": "Balance after add transaction",
+            "example": 4600
           }
         }
       },
