@@ -15,7 +15,19 @@ const HttpCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
+const TransactionsCategory = [
+  "основной",
+  "еда",
+  "авто",
+  "развитие",
+  "дети",
+  "дом",
+  "образовние",
+  "остальные",
+];
+
 module.exports = {
   ValidUserName,
   HttpCode,
+  TransactionsCategory,
 };
