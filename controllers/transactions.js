@@ -10,8 +10,9 @@ const createTransaction = async (req, res, next) => {
 
 const getTransactions = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const data = await Transaction.listTransactions(userId, req.query);
+    // const userId = req.user._id;
+    // const data = await Transaction.listTransactions(userId, req.query);
+    const data = await Transaction.listTransactions();
     res.json({ status: "success", code: HttpCode.OK, data: { ...data } });
   } catch (err) {
     next(err);

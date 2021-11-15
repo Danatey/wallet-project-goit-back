@@ -4,9 +4,10 @@ const { TransactionsCategory } = require("../config/contants");
 
 const transactionSchema = new Schema(
   {
-    emount: {
+    amount: {
       type: String,
       require: true,
+      set: (data) => Number(data),
     },
     type: {
       type: String,
@@ -47,7 +48,7 @@ const transactionSchema = new Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
-        ret.emount = Number(ret.emount);
+        ret.amount = Number(ret.amount);
         ret.date = new Date(ret.date);
         ret.year = ret.date.getFullYear();
         ret.month = ret.date.getMonth() + 1;
@@ -60,10 +61,21 @@ const transactionSchema = new Schema(
   }
 );
 
-transactionSchema.virtual("transactionBalance").get(function () {
-  // const res = Transaction.find({}).populate("balance").exec();
-  // console.log(res);
+transactionSchema.pre("save", function (next) {
+  const formatedDate = new Date(this.date);
+  this.date = formatedDate;
+  this.year = formatedDate.getFullYear();
+  this.month = formatedDate.getMonth() + 1;
+  this.day = formatedDate.getDay();
+  const amountChange = Number(this.amount);
+  this.amount = amountChange;
+
+  next();
 });
+// transactionSchema.virtual("transactionBalance").get(function () {
+//   console.log(this.date);
+
+// });
 
 transactionSchema.plugin(mongoosePaginate);
 const Transaction = model("transaction", transactionSchema);
