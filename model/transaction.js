@@ -4,8 +4,8 @@ const { TransactionsCategory } = require("../config/contants");
 
 const transactionSchema = new Schema(
   {
-    value: {
-      type: Number,
+    emount: {
+      type: String,
       require: true,
     },
     type: {
@@ -29,8 +29,9 @@ const transactionSchema = new Schema(
     year: {
       type: Number,
     },
-    userBalance: {
-      type: Number,
+    balance: {
+      type: SchemaTypes.ObjectId,
+      ref: "user",
     },
     comment: {
       type: String,
@@ -46,6 +47,7 @@ const transactionSchema = new Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
+        ret.emount = Number(ret.emount);
         ret.date = new Date(ret.date);
         ret.year = ret.date.getFullYear();
         ret.month = ret.date.getMonth() + 1;
@@ -58,11 +60,10 @@ const transactionSchema = new Schema(
   }
 );
 
-// transactionSchema.virtual("transactionBalance").get(function () {
-//   if (balance) {
-//     return;
-//   }
-// });
+transactionSchema.virtual("transactionBalance").get(function () {
+  // const res = Transaction.find({}).populate("balance").exec();
+  // console.log(res);
+});
 
 transactionSchema.plugin(mongoosePaginate);
 const Transaction = model("transaction", transactionSchema);
