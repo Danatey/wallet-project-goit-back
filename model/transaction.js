@@ -5,7 +5,7 @@ const { TransactionsCategory } = require("../config/contants");
 const transactionSchema = new Schema(
   {
     amount: {
-      type: String,
+      type: Number,
       require: true,
       set: (data) => Number(data),
     },
@@ -47,15 +47,14 @@ const transactionSchema = new Schema(
     timestamps: true,
     toJSON: {
       virtuals: true,
-      transform: function (doc, ret) {
-        ret.amount = Number(ret.amount);
-        ret.date = new Date(ret.date);
-        ret.year = ret.date.getFullYear();
-        ret.month = ret.date.getMonth() + 1;
-        delete ret.date;
-        delete ret._id;
-        return ret;
-      },
+      // transform: function (doc, ret) {
+      //   ret.date = new Date(ret.date);
+      //   ret.year = ret.date.getFullYear();
+      //   ret.month = ret.date.getMonth() + 1;
+      //   delete ret.date;
+      //   delete ret._id;
+      //   return ret;
+      // },
     },
     toObject: { virtuals: true },
   }
@@ -67,10 +66,23 @@ transactionSchema.pre("save", function (next) {
   this.year = formatedDate.getFullYear();
   this.month = formatedDate.getMonth() + 1;
   this.day = formatedDate.getDay();
-  const amountChange = Number(this.amount);
-  this.amount = amountChange;
 
-  next();
+  //   User
+  // .find({ balance : bob._id })
+  // .exec(function (err, stories) {
+  //   if (err) return handleError(err);
+
+  //   next();
+
+  Transaction.find({})
+    .populate("user")
+    .exec((err, result) => {
+      if (err) {
+        return res.json({ error: err });
+      }
+      console.log(result);
+      res.json({ result: result });
+    });
 });
 // transactionSchema.virtual("transactionBalance").get(function () {
 //   console.log(this.date);
