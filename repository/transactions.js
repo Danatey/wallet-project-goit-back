@@ -24,20 +24,42 @@ const addTransaction = async (body) => {
 // ????
 // отримання транзакцій в проміжку часу.
 
-const getTransactionsInRangeOfTime = async (userId, start_date, end_date) => {
-  const result = await Transaction.find({
+const getTransactionsInRangeOfTime = async (
+  userId,
+  query,
+  start_date,
+  end_date
+) => {
+  const { limit = 5, page = 1 } = query;
+  const searchOptions = {
     owner: userId,
     date: { $gte: start_date, $lte: end_date },
+  };
+
+  const results = await Transaction.paginate(searchOptions, {
+    limit,
+    page,
+    sort: { date: "desc" },
   });
-  return result;
+  const { docs: result } = results;
+  delete results.docs;
+  return { ...results, result };
 };
 
-const getTransactionsOfFullYear = async (userId, year) => {
-  const result = await Transaction.find({
+const getTransactionsOfFullYear = async (userId, query, year) => {
+  const { limit = 5, page = 1 } = query;
+  const searchOptions = {
     owner: userId,
     year: year,
+  };
+  const results = await Transaction.paginate(searchOptions, {
+    limit,
+    page,
+    sort: { date: "desc" },
   });
-  return result;
+  const { docs: result } = results;
+  delete results.docs;
+  return { ...results, result };
 };
 
 module.exports = {

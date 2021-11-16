@@ -51,6 +51,7 @@ const getTransactionsByMonth = async (req, res) => {
 
     const data = await Transaction.getTransactionsInRangeOfTime(
       userId,
+      req.query,
       monthRange[0],
       monthRange[1]
     );
@@ -68,6 +69,7 @@ const getTransactionsByYear = async (req, res) => {
 
     const data = await Transaction.getTransactionsOfFullYear(
       userId,
+      req.query,
       requestYear
     );
     res.json({ status: "success", code: HttpCode.OK, data: { ...data } });
