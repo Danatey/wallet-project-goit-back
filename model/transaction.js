@@ -5,9 +5,8 @@ const { TransactionsCategory } = require("../config/contants");
 const transactionSchema = new Schema(
   {
     amount: {
-      type: Number,
+      type: String,
       require: true,
-      set: (data) => Number(data),
     },
     type: {
       type: String,
@@ -54,7 +53,6 @@ const transactionSchema = new Schema(
 );
 
 transactionSchema.pre("save", function (next) {
-  this.amount = Number(this.amount);
   const formatedDate = new Date(this.date);
   this.date = Date.parse(formatedDate);
   this.year = formatedDate.getFullYear();
