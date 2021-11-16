@@ -2,6 +2,7 @@ const Transaction = require("../repository/transactions");
 const User = require("../repository/users");
 const { HttpCode } = require("../config/contants");
 const monthCounter = require("../helpers/monthCounter");
+const yearCounter = require("../helpers/yearCounter");
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -46,9 +47,8 @@ const getTransactions = async (req, res) => {
 const getTransactionsByMonth = async (req, res) => {
   try {
     const userId = req.user._id;
-    console.log(req.body.date);
-
     const monthRange = monthCounter(req.body.date);
+
     const data = await Transaction.getTransactionsInRangeOfTime(
       userId,
       monthRange[0],
@@ -64,9 +64,11 @@ const getTransactionsByMonth = async (req, res) => {
 const getTransactionsByYear = async (req, res) => {
   try {
     const userId = req.user._id;
-    const data = await Transaction.getTransactionsInRangeOfTime(
+    const requestYear = yearCounter(req.body.date);
+
+    const data = await Transaction.getTransactionsOfFullYear(
       userId,
-      ...req.query
+      requestYear
     );
     res.json({ status: "success", code: HttpCode.OK, data: { ...data } });
   } catch (err) {

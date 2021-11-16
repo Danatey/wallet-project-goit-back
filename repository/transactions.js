@@ -32,8 +32,17 @@ const getTransactionsInRangeOfTime = async (userId, start_date, end_date) => {
   return result;
 };
 
+const getTransactionsOfFullYear = async (userId, year) => {
+  const result = await Transaction.find({
+    owner: userId,
+    year: year,
+  });
+  return result;
+};
+
 module.exports = {
   addTransaction,
   listTransactions,
   getTransactionsInRangeOfTime,
+  getTransactionsOfFullYear,
 };
