@@ -55,7 +55,6 @@ const getTransactionsByMonth = async (req, res) => {
       monthRange[0],
       monthRange[1]
     );
-    console.log(`data`, data);
     res.json({ status: "success", code: HttpCode.OK, data: { ...data } });
   } catch (err) {
     console.log(err.message);
