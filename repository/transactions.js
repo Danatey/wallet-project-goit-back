@@ -4,15 +4,16 @@ const listTransactions = async (userId, query) => {
   // const results = await Transaction.find({});
   // return results;
   // };
-  const { limit = 5, page = 1 } = query;
+  const { sortByDate = "date", limit = 5, page = 1 } = query;
   const searchOptions = { owner: userId };
   const results = await Transaction.paginate(searchOptions, {
     limit,
     page,
+    sort: { ...(sortByDate ? { ["date"]: "desc" } : {}) },
   });
-  const { docs: transactions } = results;
+  const { docs: result } = results;
   delete results.docs;
-  return { ...results, transactions };
+  return { ...results, result };
 };
 
 const addTransaction = async (body) => {
