@@ -9,6 +9,7 @@ const listTransactions = async (userId, query) => {
   const results = await Transaction.paginate(searchOptions, {
     limit,
     page,
+    sort: { date: "desc" },
   });
   const { docs: transactions } = results;
   delete results.docs;
