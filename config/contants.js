@@ -35,6 +35,16 @@ const TransactionsCategory = [
   "образовние",
   "остальные",
 ];
+const TransactionsCategoryObject = {
+  основной: "основной",
+  еда: "еда",
+  авто: "авто",
+  развитие: "развитие",
+  дети: "дети",
+  дом: "дом",
+  образовние: "образовние",
+  остальные: "остальные",
+};
 
 module.exports = {
   ValidUserName,
@@ -42,4 +52,5 @@ module.exports = {
   RateLimitVariables,
   ValidPassword,
   TransactionsCategory,
+  TransactionsCategoryObject,
 };
