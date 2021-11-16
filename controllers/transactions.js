@@ -1,22 +1,15 @@
 const Transaction = require("../repository/transactions");
 const User = require("../repository/users");
 const { HttpCode } = require("../config/contants");
-// const countBalance = require("../helpers/countTransactionBalance");
+const countBalance = require("../helpers/countTransactionBalance");
 
 const createTransaction = async (req, res, next) => {
   try {
     const { _id: userId, balance } = req.user;
     const { amount, type } = req.body;
-    const amountNumber = Number(amount);
-    // const transactionBalance = countBalance(type, balance, amountNumber);
-    // const userInfo = await User.findById(req.user._id);
-    // const balance = userInfo.balance;
+    const amountNumber = parseInt(amount);
 
-    let transactionBalance;
-
-    type === "+"
-      ? (transactionBalance = balance + amountNumber)
-      : (transactionBalance = balance - amountNumber);
+    const transactionBalance = countBalance(type, balance, amountNumber);
 
     await User.addBalance(userId, transactionBalance);
 

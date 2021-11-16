@@ -1,8 +1,4 @@
-const countBalance = (type, balance, payload) => {
-  let transactionBalance;
-  type === "+"
-    ? (transactionBalance = balance + payload)
-    : (transactionBalance = balance - payload);
-};
+const countBalance = (type, balance, payload) =>
+  type === "+" ? balance + payload : balance - payload;
 
 module.exports = countBalance;
