@@ -17,12 +17,7 @@ const signup = async (req, res, next) => {
     });
   }
   try {
-    // TOD: Send email for verify user
-
     const newUser = await Users.create({ name, email, password });
-    // const emailService = new EmailService(
-    //   process.env.NODE_ENV,
-    // )
     return res
       .status(HttpCode.CREATED)
       .json({
@@ -32,7 +27,6 @@ const signup = async (req, res, next) => {
           id: newUser.id,
           name: newUser.name,
           email: newUser.email,
-          // successEmail: statusEmail,
         },
       });
     } catch(error) {
@@ -74,8 +68,31 @@ const logout = async (req, res, next) => {
   return res.status(HttpCode.NO_CONTENT).json({});
 };
 
+const currentUser = async (req, res, next) => { 
+  try {
+    const { email, password, token, _id, balance, category } = req.user;
+    return res
+      .status(HttpCode.OK)
+      .json({
+        status: 'success',
+        code: HttpCode.OK,
+        data: {
+          email,
+          password,
+          token,
+          _id,
+          balance,
+          category,
+        },
+      });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   signup,
   login,
   logout,
+  currentUser,
 };
