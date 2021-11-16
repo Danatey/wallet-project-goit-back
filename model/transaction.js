@@ -53,7 +53,9 @@ const transactionSchema = new Schema(
         return ret;
       },
     },
-    toObject: { virtuals: true },
+    toObject: {
+      virtuals: true,
+    },
   }
 );
 
@@ -63,28 +65,10 @@ transactionSchema.pre("save", function (next) {
   this.year = formatedDate.getFullYear();
   this.month = formatedDate.getMonth() + 1;
   this.day = formatedDate.getDay();
-
-  //   User
-  // .find({ balance : bob._id })
-  // .exec(function (err, stories) {
-  //   if (err) return handleError(err);
+  this.amount = parseInt(this.amount);
 
   next();
-
-  // Transaction.find({})
-  //   .populate("user")
-  //   .exec((err, result) => {
-  //     if (err) {
-  //       return res.json({ error: err });
-  //     }
-  //     console.log(result);
-  //     res.json({ result: result });
-  //   });
 });
-// transactionSchema.virtual("transactionBalance").get(function () {
-//   console.log(this.date);
-
-// });
 
 transactionSchema.plugin(mongoosePaginate);
 const Transaction = model("transaction", transactionSchema);
