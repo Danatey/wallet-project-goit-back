@@ -1,9 +1,9 @@
 const Transaction = require("../repository/transactions");
 const User = require("../repository/users");
 const { HttpCode } = require("../config/contants");
+const countBalance = require("../helpers/countTransactionBalance");
 const monthCounter = require("../helpers/monthCounter");
 const yearCounter = require("../helpers/yearCounter");
-const countBalance = require("../helpers/countTransactionBalance");
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -25,7 +25,6 @@ const createTransaction = async (req, res, next) => {
       code: HttpCode.CREATED,
       data: { transaction },
     });
-    next(countUserBalance);
   } catch (err) {
     next(err);
   }
