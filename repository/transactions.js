@@ -1,34 +1,70 @@
 const Transaction = require("../model/transaction");
 
 const listTransactions = async (userId, query) => {
-  const results = await Transaction.find({});
-  return results;
+  // const results = await Transaction.find({});
+  // return results;
+  // };
+  const { limit = 5, page = 1 } = query;
+  const searchOptions = { owner: userId };
+  const results = await Transaction.paginate(searchOptions, {
+    limit,
+    page,
+    sort: { date: "desc" },
+  });
+  const { docs: result } = results;
+  delete results.docs;
+  return { ...results, result };
 };
-// const { limit = 5, page = 1 } = query;
-// const searchOptions = { owner: userId };
-// const results = await Transaction.paginate(searchOptions, {
-//   limit,
-//   page,
-//   populate: {
-//     path: "owner",
-//     select: "balance email",
-//   },
-// });
-// const { docs: transactions } = results;
-// delete results.docs;
-// return { ...results, transactions };
-// };
 
 const addTransaction = async (body) => {
-  // take summary balance and id of user
-  // const userBalance = req.user.balance;
-  //  const userId = req.user._id;
-
   const result = await Transaction.create(body);
   return result;
+};
+
+// ????
+// отримання транзакцій в проміжку часу.
+
+const getTransactionsInRangeOfTime = async (
+  userId,
+  query,
+  start_date,
+  end_date
+) => {
+  const { limit = 5, page = 1 } = query;
+  const searchOptions = {
+    owner: userId,
+    date: { $gte: start_date, $lte: end_date },
+  };
+
+  const results = await Transaction.paginate(searchOptions, {
+    limit,
+    page,
+    sort: { date: "desc" },
+  });
+  const { docs: result } = results;
+  delete results.docs;
+  return { ...results, result };
+};
+
+const getTransactionsOfFullYear = async (userId, query, year) => {
+  const { limit = 5, page = 1 } = query;
+  const searchOptions = {
+    owner: userId,
+    year: year,
+  };
+  const results = await Transaction.paginate(searchOptions, {
+    limit,
+    page,
+    sort: { date: "desc" },
+  });
+  const { docs: result } = results;
+  delete results.docs;
+  return { ...results, result };
 };
 
 module.exports = {
   addTransaction,
   listTransactions,
+  getTransactionsInRangeOfTime,
+  getTransactionsOfFullYear,
 };

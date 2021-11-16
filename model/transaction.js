@@ -5,13 +5,14 @@ const { TransactionsCategory } = require("../config/contants");
 const transactionSchema = new Schema(
   {
     amount: {
-      type: String,
+      type: Number,
       require: true,
       set: (data) => Number(data),
     },
     type: {
       type: String,
       enum: ["+", "-"],
+      require: true,
     },
     category: {
       type: String,
@@ -20,6 +21,7 @@ const transactionSchema = new Schema(
     },
     date: {
       type: String,
+      require: true,
     },
     day: {
       type: Number,
@@ -31,8 +33,7 @@ const transactionSchema = new Schema(
       type: Number,
     },
     balance: {
-      type: SchemaTypes.ObjectId,
-      ref: "user",
+      type: Number,
     },
     comment: {
       type: String,
@@ -48,11 +49,6 @@ const transactionSchema = new Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
-        ret.amount = Number(ret.amount);
-        ret.date = new Date(ret.date);
-        ret.year = ret.date.getFullYear();
-        ret.month = ret.date.getMonth() + 1;
-        delete ret.date;
         delete ret._id;
         return ret;
       },
@@ -62,15 +58,29 @@ const transactionSchema = new Schema(
 );
 
 transactionSchema.pre("save", function (next) {
+  this.amount = Number(this.amount);
   const formatedDate = new Date(this.date);
-  this.date = formatedDate;
+  this.date = Date.parse(formatedDate);
   this.year = formatedDate.getFullYear();
   this.month = formatedDate.getMonth() + 1;
   this.day = formatedDate.getDay();
-  const amountChange = Number(this.amount);
-  this.amount = amountChange;
+
+  //   User
+  // .find({ balance : bob._id })
+  // .exec(function (err, stories) {
+  //   if (err) return handleError(err);
 
   next();
+
+  // Transaction.find({})
+  //   .populate("user")
+  //   .exec((err, result) => {
+  //     if (err) {
+  //       return res.json({ error: err });
+  //     }
+  //     console.log(result);
+  //     res.json({ result: result });
+  //   });
 });
 // transactionSchema.virtual("transactionBalance").get(function () {
 //   console.log(this.date);
