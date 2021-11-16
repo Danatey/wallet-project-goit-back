@@ -12,7 +12,7 @@ const quard = require("../../helpers/guard");
 
 router.get("/", quard, getTransactions);
 router.post("/create", quard, createTransaction);
-router.post("/month", quard, getTransactionsByMonth);
-router.post("/year", quard, getTransactionsByYear);
+router.get("/month", quard, getTransactionsByMonth);
+router.get("/year", quard, getTransactionsByYear);
 
 module.exports = router;

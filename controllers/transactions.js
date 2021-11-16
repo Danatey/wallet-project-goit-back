@@ -46,12 +46,15 @@ const getTransactions = async (req, res) => {
 const getTransactionsByMonth = async (req, res) => {
   try {
     const userId = req.user._id;
-    const [monthRange] = monthCounter(req.body.date);
+    console.log(req.body.date);
+
+    const monthRange = monthCounter(req.body.date);
     const data = await Transaction.getTransactionsInRangeOfTime(
       userId,
-      monthRange[1],
-      monthRange[2]
+      monthRange[0],
+      monthRange[1]
     );
+    console.log(`data`, data);
     res.json({ status: "success", code: HttpCode.OK, data: { ...data } });
   } catch (err) {
     console.log(err.message);
