@@ -21,7 +21,19 @@ const addTransaction = async (body) => {
   return result;
 };
 
+// ????
+// отримання транзакцій в проміжку часу.
+
+const getTransactionsInRangeOfTime = async (userId, start_date, end_date) => {
+  const result = await Contact.find({
+    date: { $lte: new Date(start_date), $gte: new Date(end_date) },
+    owner: userId,
+  });
+  return result;
+};
+
 module.exports = {
   addTransaction,
   listTransactions,
+  getTransactionsInRangeOfTime,
 };
