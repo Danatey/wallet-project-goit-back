@@ -2,8 +2,9 @@ const Transaction = require("../repository/transactions");
 const User = require("../repository/users");
 const { HttpCode } = require("../config/contants");
 const countBalance = require("../helpers/countTransactionBalance");
-const monthCounter = require("../helpers/monthCounter");
-const yearCounter = require("../helpers/yearCounter");
+
+// :DELETE after category schema will be created
+const { TransactionsCategory } = require("../config/contants");
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -40,16 +41,16 @@ const getTransactions = async (req, res) => {
   }
 };
 
-const getTransactionsByMonth = async (req, res) => {
+const getTransactionsByDate = async (req, res) => {
   try {
     const userId = req.user._id;
-    const monthRange = monthCounter(req.body.date);
+    const { year, month } = req.body;
 
-    const data = await Transaction.getTransactionsInRangeOfTime(
+    const data = await Transaction.listTransactionsByDate(
       userId,
       req.query,
-      monthRange[0],
-      monthRange[1]
+      year,
+      month
     );
     res.json({ status: "success", code: HttpCode.OK, data: { ...data } });
   } catch (err) {
@@ -57,25 +58,33 @@ const getTransactionsByMonth = async (req, res) => {
   }
 };
 
-const getTransactionsByYear = async (req, res) => {
-  try {
-    const userId = req.user._id;
-    const requestYear = yearCounter(req.body.date);
+const getTransactionsByCategory = async (req, res) => {
+  const userId = req.user._id;
+  const { year, month } = req.body;
 
-    const data = await Transaction.getTransactionsOfFullYear(
-      userId,
-      req.query,
-      requestYear
-    );
-    res.json({ status: "success", code: HttpCode.OK, data: { ...data } });
-  } catch (err) {
-    console.log(err.message);
-  }
+  const categoriesBalances = await Transaction.listTransactionByCategories(
+    userId,
+    year,
+    month
+  );
+  const categoriesTotalBalance = TransactionsCategory.reduce(
+    (acc, val) => ({
+      ...acc,
+      [val]: categoriesBalances[val] || 0,
+    }),
+    {}
+  );
+
+  res.status(HttpCode.OK).json({
+    status: "OK",
+    code: HttpCode.OK,
+    data: categoriesTotalBalance,
+  });
 };
 
 module.exports = {
   createTransaction,
   getTransactions,
-  getTransactionsByMonth,
-  getTransactionsByYear,
+  getTransactionsByDate,
+  getTransactionsByCategory,
 };

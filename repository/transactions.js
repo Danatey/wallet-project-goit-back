@@ -18,18 +18,13 @@ const addTransaction = async (body) => {
   return result;
 };
 
-const getTransactionsInRangeOfTime = async (
-  userId,
-  query,
-  start_date,
-  end_date
-) => {
+const listTransactionsByDate = async (userId, query, year, month) => {
   const { limit = 5, page = 1 } = query;
   const searchOptions = {
     owner: userId,
-    date: { $gte: start_date, $lte: end_date },
+    year: year,
+    month: month,
   };
-
   const results = await Transaction.paginate(searchOptions, {
     limit,
     page,
@@ -40,25 +35,34 @@ const getTransactionsInRangeOfTime = async (
   return { ...results, result };
 };
 
-const getTransactionsOfFullYear = async (userId, query, year) => {
-  const { limit = 5, page = 1 } = query;
-  const searchOptions = {
+const listTransactionByCategories = async (userId, year, month) => {
+  const transactions = await Transaction.find({
     owner: userId,
     year: year,
-  };
-  const results = await Transaction.paginate(searchOptions, {
-    limit,
-    page,
-    sort: { date: "desc" },
+    month: month,
   });
-  const { docs: result } = results;
-  delete results.docs;
-  return { ...results, result };
+  console.log(`transactions`, transactions);
+  const categoryBalance = transactions.reduce(
+    (acc, { category, amount, type }) => ({
+      ...acc,
+      [category]:
+        acc[category] && type === "+"
+          ? acc[category] + amount
+          : acc[category] && type === "-"
+          ? acc[category] - amount
+          : !acc[category] && type === "-"
+          ? -amount
+          : amount,
+    }),
+    {}
+  );
+
+  return categoryBalance;
 };
 
 module.exports = {
   addTransaction,
   listTransactions,
-  getTransactionsInRangeOfTime,
-  getTransactionsOfFullYear,
+  listTransactionByCategories,
+  listTransactionsByDate,
 };
