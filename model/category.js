@@ -1,14 +1,9 @@
-const { Schema, model, SchemaTypes } = require("mongoose");
-const { TransactionsCategoryObject } = require("../config/contants");
+const { Schema, model } = require("mongoose");
+// const { TransactionsCategory } = require("../config/contants");
 
 const categorySchema = new Schema(
   {
-    name: { type: String },
-    default: { TransactionsCategoryObject },
-    owner: {
-      type: SchemaTypes.ObjectId,
-      ref: "user",
-    },
+    category: [String],
   },
   {
     versionKey: false,

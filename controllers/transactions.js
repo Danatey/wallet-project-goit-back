@@ -35,7 +35,7 @@ const getTransactions = async (req, res) => {
   try {
     const userId = req.user._id;
     const data = await Transaction.listTransactions(userId, req.query);
-    res.json({ status: "success", code: HttpCode.OK, data: { ...data } });
+    res.json({ status: "success", code: HttpCode.OK, data: data });
   } catch (err) {
     console.log(err.message);
   }

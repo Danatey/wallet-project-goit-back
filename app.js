@@ -6,7 +6,7 @@ const swaggerUi = require("swagger-ui-express");
 
 const transactionsRouter = require("./routes/transactions/transactions");
 const usersRouter = require("./routes/users/users");
-const categoriesRouter = require("./routes/users/categories");
+const categoriesRouter = require("./routes/categories/categories");
 const { HttpCode } = require("./config/contants");
 
 const app = express();
