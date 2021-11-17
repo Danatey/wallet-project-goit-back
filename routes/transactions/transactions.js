@@ -4,15 +4,15 @@ const router = express.Router();
 const {
   createTransaction,
   getTransactions,
-  getTransactionsByMonth,
-  getTransactionsByYear,
+  getTransactionsByDate,
+  getTransactionsByCategory,
 } = require("../../controllers/transactions");
 
 const quard = require("../../helpers/guard");
 
 router.get("/", quard, getTransactions);
 router.post("/create", quard, createTransaction);
-router.get("/month", quard, getTransactionsByMonth);
-router.get("/year", quard, getTransactionsByYear);
+router.get("/date", quard, getTransactionsByDate);
+router.get("/categories", quard, getTransactionsByCategory);
 
 module.exports = router;
