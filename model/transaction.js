@@ -1,6 +1,6 @@
 const { Schema, SchemaTypes, model } = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
-const { TransactionsCategory } = require("../config/contants");
+const { TransactionsCategory } = require("../config/constants");
 
 const transactionSchema = new Schema(
   {
