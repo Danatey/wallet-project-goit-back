@@ -18,7 +18,6 @@ const addTransaction = async (body) => {
   return result;
 };
 
-// For feature find transaction by date
 const listTransactionsByDate = async (userId, query, year, month) => {
   const { limit = 5, page = 1 } = query;
   const searchOptions = {
@@ -44,24 +43,16 @@ const listTransactionByCategories = async (userId, year, month) => {
   });
   console.log(`transactions`, transactions);
   const categoryBalance = transactions.reduce(
-    (
-      acc,
-      {
-        category,
-        amount,
-        type,
-        positiveCategoryBalance,
-        negativeCategoryBalance,
-      }
-    ) => ({
+    (acc, { category, amount, type }) => ({
       ...acc,
-      [category]: !acc[category]
-        ? amount
-        : acc[category] && acc[type] === "+"
-        ? acc[category] + amount
-        : acc[category] - amount,
-      [positiveCategoryBalance]: 0,
-      [negativeCategoryBalance]: 0,
+      [category]:
+        acc[category] && type === "+"
+          ? acc[category] + amount
+          : acc[category] && type === "-"
+          ? acc[category] - amount
+          : !acc[category] && type === "-"
+          ? -amount
+          : amount,
     }),
     {}
   );

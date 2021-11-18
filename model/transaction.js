@@ -1,6 +1,6 @@
-const { Schema, SchemaTypes, model } = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
-const { TransactionsCategory } = require("../config/contants");
+const { Schema, SchemaTypes, model } = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
+const { TransactionsCategory } = require('../config/constants');
 
 const transactionSchema = new Schema(
   {
@@ -11,7 +11,7 @@ const transactionSchema = new Schema(
     },
     type: {
       type: String,
-      enum: ["+", "-"],
+      enum: ['+', '-'],
       require: true,
     },
     category: {
@@ -46,7 +46,7 @@ const transactionSchema = new Schema(
     },
     owner: {
       type: SchemaTypes.ObjectId,
-      ref: "user",
+      ref: 'user',
     },
   },
   {
@@ -65,7 +65,7 @@ const transactionSchema = new Schema(
   }
 );
 
-transactionSchema.pre("save", function (next) {
+transactionSchema.pre('save', function (next) {
   const formatedDate = new Date(this.date);
   this.date = Date.parse(formatedDate);
   this.year = formatedDate.getFullYear();
@@ -77,6 +77,6 @@ transactionSchema.pre("save", function (next) {
 });
 
 transactionSchema.plugin(mongoosePaginate);
-const Transaction = model("transaction", transactionSchema);
+const Transaction = model('transaction', transactionSchema);
 
 module.exports = Transaction;
