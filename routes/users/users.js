@@ -8,13 +8,15 @@ const {
   signup,
   login,
   logout,
-  currentUser } = require("../../controllers/users");
+  currentUser,
+  refreshTokens } = require("../../controllers/users");
 const guard = require('../../helpers/guard');
 const loginLimit = require('../../helpers/rate-limit-login');
 
 router.post('/signup', validateUserSignup, signup);
 router.post('/login', loginLimit, validateUserLogin, login);
 router.post('/logout', guard, logout);
-router.get('/info', guard, currentUser);
+router.get('/info', currentUser);
+router.post('/refresh-tokens', refreshTokens);
 
 module.exports = router;
