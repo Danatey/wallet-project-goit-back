@@ -9,8 +9,8 @@ const create = async (options) => {
   return await user.save();
 };
 
-const updateToken = async (id, accessToken, refreshToken) => {
-  return await User.updateMany({ _id: id }, { accessToken, refreshToken });
+const updateToken = async (id, token, refreshToken) => {
+  return await User.updateMany({ _id: id }, { token, refreshToken });
 };
 
 const findById = async (id) => {
