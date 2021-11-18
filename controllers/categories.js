@@ -4,7 +4,9 @@ const { HttpCode } = require("../config/constants");
 const getCategories = async (req, res) => {
   try {
     const data = await Category.listCategories();
-    res.json({ status: "success", code: HttpCode.OK, data: data });
+    return res
+      .status(HttpCode.CREATED)
+      .json({ status: "success", code: HttpCode.OK, data: data });
   } catch (err) {
     console.log(err.message);
   }
