@@ -1,10 +1,10 @@
-const Transaction = require('../repository/transactions');
-const User = require('../repository/users');
-const { HttpCode } = require('../config/constants');
-const countBalance = require('../helpers/countTransactionBalance');
+const Transaction = require("../repository/transactions");
+const User = require("../repository/users");
+const { HttpCode } = require("../config/constants");
+const countBalance = require("../helpers/countTransactionBalance");
 
 // :DELETE after category schema will be created
-const { TransactionsCategory } = require('../config/constants');
+const { TransactionsCategory } = require("../config/constants");
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -22,7 +22,7 @@ const createTransaction = async (req, res, next) => {
       balance: transactionBalance,
     });
     return res.status(HttpCode.CREATED).json({
-      status: 'success',
+      status: "success",
       code: HttpCode.CREATED,
       data: { transaction },
     });
@@ -36,7 +36,7 @@ const getTransactions = async (req, res) => {
     const userId = req.user._id;
     const data = await Transaction.listTransactions(userId, req.query);
     return res.json({
-      status: 'success',
+      status: "success",
       code: HttpCode.OK,
       data: { ...data },
     });
@@ -57,7 +57,7 @@ const getTransactionsByDate = async (req, res) => {
       month
     );
     return res.json({
-      status: 'success',
+      status: "success",
       code: HttpCode.OK,
       data: { ...data },
     });
@@ -75,7 +75,12 @@ const getTransactionsByCategory = async (req, res) => {
     year,
     month
   );
-  const categoriesTotalBalance = TransactionsCategory.reduce(
+  const transactionsWithBalance = [
+    ...TransactionsCategory,
+    "totalIncome",
+    "totalExpence",
+  ];
+  const categoriesTotalBalance = transactionsWithBalance.reduce(
     (acc, val) => ({
       ...acc,
       [val]: categoriesBalances[val] || 0,
@@ -84,7 +89,7 @@ const getTransactionsByCategory = async (req, res) => {
   );
 
   return res.status(HttpCode.OK).json({
-    status: 'OK',
+    status: "OK",
     code: HttpCode.OK,
     data: categoriesTotalBalance,
   });

@@ -41,7 +41,6 @@ const listTransactionByCategories = async (userId, year, month) => {
     year: year,
     month: month,
   });
-  console.log(`transactions`, transactions);
   const categoryBalance = transactions.reduce(
     (acc, { category, amount, type }) => ({
       ...acc,
@@ -56,8 +55,21 @@ const listTransactionByCategories = async (userId, year, month) => {
     }),
     {}
   );
+  const totalIncome = transactions.reduce(
+    (acc, { amount, type }) => (type === "+" ? acc + amount : acc),
+    0
+  );
+  const totalExpence = transactions.reduce(
+    (acc, { amount, type }) => (type === "-" ? acc + amount : acc),
+    0
+  );
 
-  return categoryBalance;
+  const result = {
+    ...categoryBalance,
+    totalIncome: totalIncome,
+    totalExpence: totalExpence,
+  };
+  return result;
 };
 
 module.exports = {
