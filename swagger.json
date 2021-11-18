@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "1.1.0",
+    "version": "2.0.0",
     "title": "Wallet API docs",
     "description": "API documentation for GoIT project 'Wallet'. [Backend github repository](https://github.com/Danatey/wallet-project-goit-back)",
     "license": {
@@ -17,6 +17,9 @@
   ],
   "servers": [
     {
+      "url": "https://wallet-project-goit-back.herokuapp.com/"
+    },
+    {
       "url": "http://localhost:3001"
     }
   ],
@@ -31,7 +34,7 @@
     }
   ],
   "paths": {
-    "/users/signup": {
+    "/api/users/signup": {
       "post": {
         "tags": [
           "Users"
@@ -71,7 +74,7 @@
         }
       }
     },
-    "/users/login": {
+    "/api/users/login": {
       "post": {
         "tags": [
           "Users"
@@ -111,7 +114,7 @@
         }
       }
     },
-    "/users/logout": {
+    "/api/users/logout": {
       "post": {
         "tags": [
           "Users"
@@ -160,7 +163,7 @@
         }
       }
     },
-    "/users/google": {
+    "/api/users/google": {
       "get": {
         "tags": [
           "Users"
@@ -168,7 +171,7 @@
         "summary": "Google authentication",
         "responses": {
           "200": {
-            "description": "Successful operation (redirect to front-end with token in query). Then use GET /users/info",
+            "description": "Successful operation (redirect to front-end with token in query). Then use GET /api/users/info",
             "content": {}
           },
           "403": {
@@ -178,12 +181,29 @@
         }
       }
     },
-    "/users/info": {
+    "/api/users/info": {
       "get": {
         "tags": [
           "Users"
         ],
         "summary": "Get info about user",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "About user object",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UserInfoRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -202,7 +222,7 @@
         }
       }
     },
-    "/transactions": {
+    "/api/transactions": {
       "get": {
         "tags": [
           "Transaction"
@@ -251,7 +271,7 @@
         }
       }
     },
-    "/transactions/create": {
+    "/api/transactions/create": {
       "post": {
         "tags": [
           "Transaction"
@@ -300,7 +320,7 @@
         }
       }
     },
-    "/transactions/delete": {
+    "api/transactions/delete": {
       "delete": {
         "tags": [
           "Transaction"
@@ -349,7 +369,7 @@
         }
       }
     },
-    "/transaction/statistic": {
+    "api/transaction/categories": {
       "get": {
         "tags": [
           "Transaction"
@@ -367,7 +387,7 @@
           "content": {
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/AllStatisticInfoRequest"
+                "$ref": "#/components/schemas/TransactionsByCategoryRequest"
               }
             }
           }
@@ -378,7 +398,56 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AllStatisticInfoResponse"
+                  "$ref": "#/components/schemas/TransactionsByCategoryResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body) / No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/transaction/date": {
+      "get": {
+        "tags": [
+          "Transaction"
+        ],
+        "summary": "Get all information about user's transactions by date",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Transaction's object",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionsByDateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionsByDateResponse"
                 }
               }
             }
@@ -403,11 +472,17 @@
     "schemas": {
       "RegistrationRequest": {
         "required": [
+          "name",
           "email",
           "password"
         ],
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "format": "userName"
+          },
           "email": {
             "type": "string",
             "description": "User's email",
@@ -424,7 +499,7 @@
         "required": [
           "userId",
           "email",
-          "successEmail"
+          "name"
         ],
         "type": "object",
         "properties": {
@@ -438,10 +513,10 @@
             "description": "User's email",
             "format": "email"
           },
-          "successEmail": {
-            "type": "boolean",
-            "description": "Boolean about verifying email",
-            "example": true
+          "name": {
+            "type": "string",
+            "description": "User's name",
+            "example": "userName"
           }
         }
       },
@@ -467,14 +542,6 @@
       "LoginResponse": {
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string",
-            "example": "Successfully authenticated"
-          },
-          "success": {
-            "type": "boolean",
-            "example": true
-          },
           "token": {
             "type": "string",
             "description": "Session's access token (needed for all requests)",
@@ -500,20 +567,28 @@
         "properties": {
           "message": {
             "type": "string",
-            "example": "Successful operation"
+            "code": 204,
+            "example": "NO CONTENT"
           }
         }
       },
       "TransactionRequest": {
         "type": "object",
         "required": [
+          "userId",
           "date",
           "type",
           "category",
           "comment",
-          "amount"
+          "amount",
+          "balance"
         ],
         "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User's id",
+            "example": "asffyj2345rthghj"
+          },
           "date": {
             "type": "string",
             "description": "Transaction's create date",
@@ -522,12 +597,12 @@
           "type": {
             "type": "string",
             "description": "Transaction's type",
-            "example": "Доход"
+            "example": "+"
           },
           "category": {
             "type": "string",
             "description": "Transaction's category",
-            "example": "Машина"
+            "example": "авто"
           },
           "comment": {
             "type": "string",
@@ -538,6 +613,11 @@
             "type": "integer",
             "description": "Amount of transaction",
             "example": 2000
+          },
+          "balance": {
+            "type": "integer",
+            "description": "User's balance",
+            "example": 16000
           }
         }
       },
@@ -566,12 +646,12 @@
           "type": {
             "type": "string",
             "description": "Transaction's type",
-            "example": "Доход"
+            "example": "+"
           },
           "category": {
             "type": "string",
             "description": "Transaction's category",
-            "example": "Машина"
+            "example": "авто"
           },
           "comment": {
             "type": "string",
@@ -654,12 +734,12 @@
               "type": {
                 "type": "string",
                 "description": "Transaction's type",
-                "example": "Доход"
+                "example": "+"
               },
               "category": {
                 "type": "string",
                 "description": "Transaction's category",
-                "example": "Машина"
+                "example": "авто"
               },
               "comment": {
                 "type": "string",
@@ -687,7 +767,7 @@
               "11",
               "2021"
             ],
-            "type": "Доход",
+            "type": "+",
             "category": "Машина",
             "comment": "Масло",
             "amount": 2000,
@@ -700,7 +780,7 @@
               "11",
               "2021"
             ],
-            "type": "Расход",
+            "type": "-",
             "category": "Разное",
             "comment": "Подарок жене",
             "amount": 300,
@@ -713,7 +793,7 @@
               "11",
               "2021"
             ],
-            "type": "Доход",
+            "type": "+",
             "category": "Нерегулярный доход",
             "comment": "Подарок на ДР",
             "amount": 1000,
@@ -721,18 +801,32 @@
           }
         ]
       },
-      "AllStatisticInfoRequest": {
-        "required": "userId",
+      "TransactionsByCategoryRequest": {
+        "required": [
+          "userId",
+          "year",
+          "month"
+        ],
         "type": "object",
         "properties": {
           "userId": {
             "type": "string",
             "description": "User's id",
             "example": "507f1f77bcf86cd799439011"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Number of year when transactions were payed",
+            "example": 2021
+          },
+          "month": {
+            "type": "integer",
+            "description": "Number of month when transactions were payed",
+            "example": 10
           }
         }
       },
-      "AllStatisticInfoResponse": {
+      "TransactionsByCategoryResponse": {
         "type": "object",
         "required": [
           "transactions"
@@ -745,12 +839,12 @@
               "type": {
                 "type": "string",
                 "description": "Transaction's type",
-                "example": "Доход"
+                "example": "+"
               },
               "category": {
                 "type": "string",
                 "description": "Transaction's category",
-                "example": "Машина"
+                "example": "авто"
               },
               "amount": {
                 "type": "integer",
@@ -763,21 +857,120 @@
         "example": {
           "transactions": [
             {
-              "type": "Расход",
-              "category": "Машина",
+              "type": "+",
+              "category": "авто",
               "amount": 3800
             },
             {
-              "type": "Расход",
+              "type": "-",
               "category": "Разное",
               "amount": 600
             },
             {
-              "type": "Доход",
+              "type": "+",
               "category": "Нерегулярный доход",
               "amount": 5100
             }
           ]
+        }
+      },
+      "TransactionsByDateRequest": {
+        "required": [
+          "userId",
+          "year",
+          "month"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User's id",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Number of year when transactions were payed",
+            "example": 2021
+          },
+          "month": {
+            "type": "integer",
+            "description": "Number of month when transactions were payed",
+            "example": 10
+          }
+        }
+      },
+      "TransactionsByDateResponse": {
+        "type": "object",
+        "required": [
+          "transactions"
+        ],
+        "properties": {
+          "transaction": {
+            "type": "object",
+            "description": "Array of objects with all categories of user's transactions",
+            "properties": {
+              "type": {
+                "type": "string",
+                "description": "Transaction's type",
+                "example": "+"
+              },
+              "category": {
+                "type": "string",
+                "description": "Transaction's category",
+                "example": "авто"
+              },
+              "amount": {
+                "type": "integer",
+                "description": "Amount of all user's transaction of this category",
+                "example": 3400
+              }
+            }
+          }
+        },
+        "example": {
+          "transactions": [
+            {
+              "type": "-",
+              "category": "авто",
+              "amount": 3800
+            },
+            {
+              "type": "-",
+              "category": "Разное",
+              "amount": 600
+            },
+            {
+              "type": "+",
+              "category": "Нерегулярный доход",
+              "amount": 5100
+            }
+          ]
+        }
+      },
+      "UserInfoRequest": {
+        "required": [
+          "userId",
+          "email",
+          "token"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User's id",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email",
+            "example": "example@mail.com"
+          },
+          "token": {
+            "type": "string",
+            "description": "User's token",
+            "example": "507f1f77bcf86cd799439012507f1f77bcf86cd799439012507f1f77bcf86cd799439012507f1f77bcf86cd799439012"
+          }
         }
       },
       "UserInfoResponse": {
@@ -790,16 +983,10 @@
             "format": "email",
             "example": "example@mail.com"
           },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "required": true,
-            "example": "qwer4321"
-          },
           "token": {
             "type": "string",
             "description": "User's token",
-            "default": null,
+            "required": true,
             "example": "507f1f77bcf86cd799439012507f1f77bcf86cd799439012507f1f77bcf86cd799439012507f1f77bcf86cd799439012"
           },
           "userId": {

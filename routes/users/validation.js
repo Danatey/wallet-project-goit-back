@@ -1,27 +1,23 @@
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
-const { HttpCode, ValidUserName, ValidPassword } = require('../../config/contants');
+const {
+  HttpCode,
+  ValidUserName,
+  ValidPassword,
+} = require('../../config/constants');
 
 const schemaUserSignup = Joi.object({
   name: Joi.string()
     .min(ValidUserName.MIN_NAME_LENGTH)
     .max(ValidUserName.MAX_NAME_LENGTH)
     .optional(),
-  email: Joi.string()
-    .email()
-    .required(),
-  password: Joi.string()
-    .min(ValidPassword.MIN_PASSWORD_LENGTH)
-    .required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(ValidPassword.MIN_PASSWORD_LENGTH).required(),
 });
 
 const schemaUserLogin = Joi.object({
-  email: Joi.string()
-  .email()
-  .required(),
-  password: Joi.string()
-  .min(ValidPassword.MIN_PASSWORD_LENGTH)
-  .required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(ValidPassword.MIN_PASSWORD_LENGTH).required(),
 });
 
 const validate = async (schema, obj, res, next) => {
@@ -30,7 +26,7 @@ const validate = async (schema, obj, res, next) => {
     next();
   } catch (error) {
     res.status(HttpCode.BAD_REQUEST).json({
-      status: "error",
+      status: 'error',
       code: HttpCode.BAD_REQUEST,
       message: `Validation error: ${error.message}`,
     });
