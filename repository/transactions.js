@@ -44,13 +44,24 @@ const listTransactionByCategories = async (userId, year, month) => {
   });
   console.log(`transactions`, transactions);
   const categoryBalance = transactions.reduce(
-    (acc, { category, amount, type }) => ({
+    (
+      acc,
+      {
+        category,
+        amount,
+        type,
+        positiveCategoryBalance,
+        negativeCategoryBalance,
+      }
+    ) => ({
       ...acc,
       [category]: !acc[category]
         ? amount
         : acc[category] && acc[type] === "+"
         ? acc[category] + amount
         : acc[category] - amount,
+      [positiveCategoryBalance]: 0,
+      [negativeCategoryBalance]: 0,
     }),
     {}
   );

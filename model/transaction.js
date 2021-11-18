@@ -19,6 +19,12 @@ const transactionSchema = new Schema(
       enum: TransactionsCategory,
       default: TransactionsCategory[0],
     },
+    positiveCategoryBalance: {
+      type: Number,
+    },
+    negativeCategoryBalance: {
+      type: Number,
+    },
     date: {
       type: String,
       require: true,
