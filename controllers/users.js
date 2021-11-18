@@ -62,15 +62,14 @@ const logout = async (req, res, next) => {
 
 const currentUser = async (req, res, next) => {
   try {
-    const { email, password, token, _id, balance, category } = req.user;
+    const { email, token, _id, balance, category } = req.user;
     return res.status(HttpCode.OK).json({
       status: 'success',
       code: HttpCode.OK,
       data: {
         email,
-        password,
         token,
-        _id,
+        id: _id,
         balance,
         category,
       },
