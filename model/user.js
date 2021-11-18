@@ -24,12 +24,15 @@ const userSchema = new Schema(
     balance: {
       type: Number,
     },
-    category: {
-      type: [String],
-    },
+    // category: {
+    //   type: [String],
+    // },
     token: {
       type: String,
       default: null,
+    },
+    userCategory: {
+      type: [String],
     },
   },
   {

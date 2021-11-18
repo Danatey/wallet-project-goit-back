@@ -4,6 +4,8 @@ const { Schema, model } = require("mongoose");
 const categorySchema = new Schema(
   {
     category: [String],
+
+    // owner: { type: SchemaTypes.ObjectId, ref: "transaction" },
   },
   {
     versionKey: false,
