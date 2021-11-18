@@ -82,7 +82,6 @@ const getTransactionsByCategory = async (req, res) => {
     }),
     {}
   );
-  console.log('categoriesTotalBalance: ', categoriesTotalBalance);
 
   return res.status(HttpCode.OK).json({
     status: 'OK',
