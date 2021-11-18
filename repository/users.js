@@ -10,7 +10,7 @@ const create = async (options) => {
 };
 
 const updateToken = async (id, accessToken, refreshToken) => {
-  return await User.updateOne({ _id: id }, { accessToken, refreshToken });
+  return await User.updateMany({ _id: id }, { accessToken, refreshToken });
 };
 
 const findById = async (id) => {

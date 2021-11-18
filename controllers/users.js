@@ -83,65 +83,65 @@ const currentUser = async (req, res, next) => {
   }
 };
 
-const refreshTokens = async (req, res, next) => {
-  try {
-    const { email, accessToken, refreshToken, _id, balance, category } = req.user;
-    return res.status(HttpCode.OK).json({
-      status: 'success',
-      code: HttpCode.OK,
-      data: {
-        email,
-        accessToken,
-        refreshToken,
-        id: _id,
-        balance,
-        category,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+// const refreshTokens = async (req, res, next) => {
+//   try {
+//     const { email, accessToken, refreshToken, _id, balance, category } = req.user;
+//     return res.status(HttpCode.OK).json({
+//       status: 'success',
+//       code: HttpCode.OK,
+//       data: {
+//         email,
+//         access_token: accessToken,
+//         refresh_token: refreshToken,
+//         id: _id,
+//         balance,
+//         category,
+//       },
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
-const refresh = async (req, res, next) => {
-  try {
-    const { email, accessToken, refreshToken, _id, balance, category } = req.user;
-    // const { oldRefreshToken } = req.body;
-    // console.log(req.user)
-    // const { _id } = req.user;
-    // const { email, password } = req.body;
-    // const user = await Users.findByEmail(email);
-    // const isValidPassword = await user?.isValidPassword(password);
-    // if (refreshToken !== ) {
-    //   return res.status(HttpCode.UNAUTORIZED).json({
-    //     status: 'error',
-    //     code: HttpCode.UNAUTORIZED,
-    //     message: 'Invalid credentials',
-    //   });
-    // }
-    const id = _id;
-    // const payload = { id };
-    // const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
-    // const refreshToken = uuid({ expiresIn: '1h' });
-    await Users.updateToken(id, accessToken, refreshToken);
-    return res.status(HttpCode.OK).json({
-      status: 'success',
-      code: HttpCode.OK,
-      data: {
-        access_token: accessToken,
-        refresh_token: refreshToken,
-      },
-    });
-  } catch(error) {
-    next(error);
-  };
+// const refresh = async (req, res, next) => {
+//   try {
+//     const { email, accessToken, refreshToken, _id, balance, category } = req.user;
+//     const { oldRefreshToken } = req.body;
+//     console.log(req.user)
+//     const { _id } = req.user;
+//     const { email, password } = req.body;
+//     const user = await Users.findByEmail(email);
+//     const isValidPassword = await user?.isValidPassword(password);
+//     if (refreshToken !== ) {
+//       return res.status(HttpCode.UNAUTORIZED).json({
+//         status: 'error',
+//         code: HttpCode.UNAUTORIZED,
+//         message: 'Invalid credentials',
+//       });
+//     }
+//     const id = _id;
+//     const payload = { id };
+//     const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+//     const refreshToken = uuid({ expiresIn: '1h' });
+//     await Users.updateToken(id, accessToken, refreshToken);
+//     return res.status(HttpCode.OK).json({
+//       status: 'success',
+//       code: HttpCode.OK,
+//       data: {
+//         access_token: accessToken,
+//         refresh_token: refreshToken,
+//       },
+//     });
+//   } catch(error) {
+//     next(error);
+//   };
   
-};
+// };
 
 module.exports = {
   signup,
   login,
   logout,
   currentUser,
-  refreshTokens,
+  // refreshTokens,
 };
