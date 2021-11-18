@@ -1,5 +1,5 @@
 const Category = require("../repository/categories");
-const { HttpCode } = require("../config/contants");
+const { HttpCode } = require("../config/constants");
 
 const getCategories = async (req, res) => {
   try {

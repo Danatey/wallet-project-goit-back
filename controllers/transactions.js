@@ -1,10 +1,11 @@
 const Transaction = require("../repository/transactions");
+const TransactionModel = require("../model/transaction");
 const User = require("../repository/users");
 const { HttpCode } = require("../config/constants");
 const countBalance = require("../helpers/countTransactionBalance");
 
 // :DELETE after category schema will be created
-const { TransactionsCategory } = require("../config/constants");
+// const { TransactionsCategory } = require("../config/constants");
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -75,8 +76,18 @@ const getTransactionsByCategory = async (req, res) => {
     year,
     month
   );
+  const listUserCategories = await TransactionModel.findOne({ owner: userId })
+    .populate("owner")
+    .then((res) => {
+      const result = [...res.owner.userCategory];
+      return result;
+    })
+    .catch((err) => console.log(err.message));
+
+  // console.log(`object`, listUserCategories);
+
   const transactionsWithBalance = [
-    ...TransactionsCategory,
+    ...listUserCategories,
     "totalIncome",
     "totalExpence",
   ];

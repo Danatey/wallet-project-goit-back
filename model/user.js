@@ -23,6 +23,7 @@ const userSchema = new Schema(
     },
     balance: {
       type: Number,
+      default: 0,
     },
     // category: {
     //   type: [String],
