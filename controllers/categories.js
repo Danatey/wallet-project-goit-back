@@ -5,7 +5,7 @@ const getCategories = async (req, res) => {
   try {
     const data = await Category.listCategories();
     return res
-      .status(HttpCode.CREATED)
+      .status(HttpCode.OK)
       .json({ status: "success", code: HttpCode.OK, data: data });
   } catch (err) {
     console.log(err.message);
