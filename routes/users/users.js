@@ -19,6 +19,6 @@ router.post('/signup', validateUserSignup, signup);
 router.post('/login', loginLimit, validateUserLogin, login);
 router.post('/logout', guard, logout);
 router.get('/info', guard,currentUser);
-router.post('/refresh-tokens', guard1, refreshTokens);
+router.post('/refresh-tokens', refreshTokens);
 
 module.exports = router;
