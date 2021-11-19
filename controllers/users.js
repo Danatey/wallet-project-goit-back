@@ -84,18 +84,21 @@ const currentUser = async (req, res, next) => {
 };
 
 const refreshTokens = async (req, res, next) => {
-  const { refreshToken } = req.body
-  const user = await Users.findByRefreshToken(refreshToken);
-  console.log(user);
-    if (refreshToken !== user.refreshToken) {
+  const { refreshToken } = req.body;
+    const user = await Users.findByRefreshToken(refreshToken);
+    if (!user) {
     return res.status(HttpCode.UNAUTORIZED).json({
       status: 'error',
       code: HttpCode.UNAUTORIZED,
-      message: 'Invalid credentials',
+      message: 'Error, please login',
     });
   }
   try {
-    const { id, token, refreshToken } = user;
+    console.log(user);
+    const id = user._id;
+    const payload = { id };
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+    const refreshToken = uuid({ expiresIn: '1h' });
     await Users.updateToken(id, token, refreshToken);
     return res.status(HttpCode.OK).json({
       status: 'success',
