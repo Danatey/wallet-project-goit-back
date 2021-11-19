@@ -1,6 +1,9 @@
 const { Schema, SchemaTypes, model } = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
-const { TransactionsCategory } = require("../config/constants");
+const {
+  TransactionsCategoryExpance,
+  TransactionsCategoryIncome,
+} = require("../config/constants");
 
 const transactionSchema = new Schema(
   {
@@ -16,8 +19,8 @@ const transactionSchema = new Schema(
     },
     category: {
       type: String,
-      enum: TransactionsCategory,
-      default: TransactionsCategory[0],
+      enum: [...TransactionsCategoryIncome, ...TransactionsCategoryExpance],
+      default: TransactionsCategoryIncome[0],
     },
     date: {
       type: String,
@@ -64,7 +67,7 @@ transactionSchema.pre("save", function (next) {
   this.date = Date.parse(formatedDate);
   this.year = formatedDate.getFullYear();
   this.month = formatedDate.getMonth() + 1;
-  this.day = formatedDate.getDay();
+  // this.day = formatedDate.getDay();
   this.amount = parseInt(this.amount);
 
   next();

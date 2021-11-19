@@ -3,8 +3,7 @@ const User = require("../repository/users");
 const { HttpCode } = require("../config/constants");
 const countBalance = require("../helpers/countTransactionBalance");
 
-// :DELETE after category schema will be created
-const { TransactionsCategory } = require("../config/constants");
+const { TransactionsCategoryExpance } = require("../config/constants");
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -48,7 +47,6 @@ const getTransactions = async (req, res) => {
 const getTransactionsByDate = async (req, res) => {
   try {
     const userId = req.user._id;
-    // const { year, month } = req.body;
 
     const data = await Transaction.listTransactionsByDate(userId, req.query);
     return res.json({
@@ -70,7 +68,7 @@ const getTransactionsByCategory = async (req, res) => {
     month
   );
   const transactionsWithBalance = [
-    ...TransactionsCategory,
+    ...TransactionsCategoryExpance,
     "totalIncome",
     "totalExpence",
   ];
