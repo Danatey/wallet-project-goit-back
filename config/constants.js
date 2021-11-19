@@ -25,7 +25,7 @@ const RateLimitVariables = {
   rateLimit: 3,
 };
 
-const TransactionsCategory = [
+const TransactionsCategoryExpance = [
   "основной",
   "еда",
   "авто",
@@ -35,11 +35,13 @@ const TransactionsCategory = [
   "образовние",
   "остальные",
 ];
+const TransactionsCategoryIncome = ["регулярний доход", "нерегулярний доход"];
 
 module.exports = {
   ValidUserName,
   HttpCode,
   RateLimitVariables,
   ValidPassword,
-  TransactionsCategory,
+  TransactionsCategoryExpance,
+  TransactionsCategoryIncome,
 };

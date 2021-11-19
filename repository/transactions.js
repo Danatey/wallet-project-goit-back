@@ -19,7 +19,12 @@ const addTransaction = async (body) => {
 };
 
 const listTransactionsByDate = async (userId, query) => {
-  const { limit = 5, page = 1, year, month } = query;
+  const {
+    limit = 5,
+    page = 1,
+    year = new Date().getFullYear(),
+    month = new Date().getMonth() + 1,
+  } = query;
   const searchOptions = {
     owner: userId,
     year: year,
@@ -38,23 +43,20 @@ const listTransactionsByDate = async (userId, query) => {
   return { ...results, result };
 };
 
-const listTransactionByCategories = async (userId, year, month) => {
+const listTransactionByCategories = async (
+  userId,
+  year = new Date().getFullYear(),
+  month = new Date().getMonth() + 1
+) => {
   const transactions = await Transaction.find({
     owner: userId,
     year: year,
     month: month,
   });
   const categoryBalance = transactions.reduce(
-    (acc, { category, amount, type }) => ({
+    (acc, { category, amount }) => ({
       ...acc,
-      [category]:
-        acc[category] && type === "+"
-          ? acc[category] + amount
-          : acc[category] && type === "-"
-          ? acc[category] - amount
-          : !acc[category] && type === "-"
-          ? -amount
-          : amount,
+      [category]: acc[category] ? acc[category] + amount : amount,
     }),
     {}
   );
@@ -69,8 +71,8 @@ const listTransactionByCategories = async (userId, year, month) => {
 
   const result = {
     ...categoryBalance,
-    totalIncome: totalIncome,
     totalExpence: totalExpence,
+    totalIncome: totalIncome,
   };
   return result;
 };
