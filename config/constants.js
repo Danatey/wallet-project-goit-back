@@ -37,6 +37,9 @@ const TransactionsCategoryExpance = [
 ];
 const TransactionsCategoryIncome = ["регулярний доход", "нерегулярний доход"];
 
+const CurrentYear = new Date().getFullYear();
+const CurrentMonth = new Date().getMonth() + 1;
+
 module.exports = {
   ValidUserName,
   HttpCode,
@@ -44,4 +47,6 @@ module.exports = {
   ValidPassword,
   TransactionsCategoryExpance,
   TransactionsCategoryIncome,
+  CurrentYear,
+  CurrentMonth,
 };
