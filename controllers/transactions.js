@@ -64,7 +64,6 @@ const getTransactionsByDate = async (req, res) => {
 const getTransactionsByCategory = async (req, res) => {
   const userId = req.user._id;
   const { year, month } = req.query;
-  console.log(`year`, typeof year);
   const categoriesBalances = await Transaction.listTransactionByCategories(
     userId,
     year,
