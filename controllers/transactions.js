@@ -95,20 +95,19 @@ const getTransactionsByCategory = async (req, res) => {
   });
 };
 
-const getIncomeCategory = (req, res) => {
-  return res.status(HttpCode.OK).json({
+const getIncomeCategory = (req, res) =>
+  res.status(HttpCode.OK).json({
     status: "OK",
     code: HttpCode.OK,
     data: TransactionsCategoryIncome,
   });
-};
-const getExpanceCategory = (req, res) => {
-  return res.status(HttpCode.OK).json({
+
+const getExpanceCategory = (req, res) =>
+  res.status(HttpCode.OK).json({
     status: "OK",
     code: HttpCode.OK,
     data: TransactionsCategoryExpance,
   });
-};
 
 module.exports = {
   createTransaction,
