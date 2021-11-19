@@ -2,8 +2,12 @@ const Transaction = require("../repository/transactions");
 const User = require("../repository/users");
 const { HttpCode } = require("../config/constants");
 const countBalance = require("../helpers/countTransactionBalance");
+const balanceByCategories = require("../helpers/renderBalanceByCategories");
 
-const { TransactionsCategoryExpance } = require("../config/constants");
+const {
+  TransactionsCategoryExpance,
+  TransactionsCategoryIncome,
+} = require("../config/constants");
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -72,13 +76,17 @@ const getTransactionsByCategory = async (req, res) => {
     "totalIncome",
     "totalExpence",
   ];
-  const categoriesTotalBalance = transactionsWithBalance.reduce(
-    (acc, val) => ({
-      ...acc,
-      [val]: categoriesBalances[val] || 0,
-    }),
-    {}
+  const categoriesTotalBalance = balanceByCategories(
+    transactionsWithBalance,
+    categoriesBalances
   );
+  // const categoriesTotalBalance = transactionsWithBalance.reduce(
+  //   (acc, val) => ({
+  //     ...acc,
+  //     [val]: categoriesBalances[val] || 0,
+  //   }),
+  //   {}
+  // );
 
   return res.status(HttpCode.OK).json({
     status: "OK",
@@ -87,9 +95,25 @@ const getTransactionsByCategory = async (req, res) => {
   });
 };
 
+const getIncomeCategory = (req, res) =>
+  res.status(HttpCode.OK).json({
+    status: "OK",
+    code: HttpCode.OK,
+    data: TransactionsCategoryIncome,
+  });
+
+const getExpanceCategory = (req, res) =>
+  res.status(HttpCode.OK).json({
+    status: "OK",
+    code: HttpCode.OK,
+    data: TransactionsCategoryExpance,
+  });
+
 module.exports = {
   createTransaction,
   getTransactions,
   getTransactionsByDate,
   getTransactionsByCategory,
+  getIncomeCategory,
+  getExpanceCategory,
 };

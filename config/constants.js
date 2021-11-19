@@ -26,16 +26,19 @@ const RateLimitVariables = {
 };
 
 const TransactionsCategoryExpance = [
-  "основной",
-  "еда",
-  "авто",
-  "развитие",
-  "дети",
-  "дом",
-  "образовние",
-  "остальные",
+  "продукты",
+  "машина",
+  "забота о себе",
+  "забота о детях",
+  "товары для дома",
+  "образование",
+  "досуг",
+  "другие расходы",
 ];
-const TransactionsCategoryIncome = ["регулярний доход", "нерегулярний доход"];
+const TransactionsCategoryIncome = ["регулярный доход", "не регулярный доход"];
+
+const CurrentYear = new Date().getFullYear();
+const CurrentMonth = new Date().getMonth() + 1;
 
 module.exports = {
   ValidUserName,
@@ -44,4 +47,6 @@ module.exports = {
   ValidPassword,
   TransactionsCategoryExpance,
   TransactionsCategoryIncome,
+  CurrentYear,
+  CurrentMonth,
 };
