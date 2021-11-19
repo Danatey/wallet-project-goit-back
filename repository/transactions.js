@@ -18,16 +18,19 @@ const addTransaction = async (body) => {
   return result;
 };
 
-const listTransactionsByDate = async (userId, query, year, month) => {
-  const { limit = 5, page = 1 } = query;
+const listTransactionsByDate = async (userId, query) => {
+  const { limit = 5, page = 1, year, month } = query;
   const searchOptions = {
     owner: userId,
     year: year,
     month: month,
+    query,
   };
   const results = await Transaction.paginate(searchOptions, {
     limit,
     page,
+    year,
+    month,
     sort: { date: "desc" },
   });
   const { docs: result } = results;

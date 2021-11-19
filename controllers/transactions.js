@@ -48,14 +48,9 @@ const getTransactions = async (req, res) => {
 const getTransactionsByDate = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { year, month } = req.body;
+    // const { year, month } = req.body;
 
-    const data = await Transaction.listTransactionsByDate(
-      userId,
-      req.query,
-      year,
-      month
-    );
+    const data = await Transaction.listTransactionsByDate(userId, req.query);
     return res.json({
       status: "success",
       code: HttpCode.OK,
@@ -68,8 +63,7 @@ const getTransactionsByDate = async (req, res) => {
 
 const getTransactionsByCategory = async (req, res) => {
   const userId = req.user._id;
-  const { year, month } = req.body;
-
+  const { year, month } = req.query;
   const categoriesBalances = await Transaction.listTransactionByCategories(
     userId,
     year,
