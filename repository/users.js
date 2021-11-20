@@ -9,12 +9,16 @@ const create = async (options) => {
   return await user.save();
 };
 
-const updateToken = async (id, token) => {
-  return await User.updateOne({ _id: id }, { token });
+const updateToken = async (id, accessToken, refreshToken) => {
+  return await User.updateOne({ _id: id }, { accessToken, refreshToken });
 };
 
 const findById = async (id) => {
   return await User.findById(id);
+};
+
+const findByRefreshToken = async (refreshToken) => {
+  return await User.findOne({ refreshToken });
 };
 
 const addBalance = async (id, balance) => {
@@ -26,5 +30,6 @@ module.exports = {
   create,
   updateToken,
   findById,
+  findByRefreshToken,
   addBalance,
 };
