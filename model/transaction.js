@@ -63,8 +63,6 @@ transactionSchema.pre("save", function (next) {
   const formatedDate = new Date(this.date);
   this.year = formatedDate.getFullYear();
   this.month = formatedDate.getMonth() + 1;
-  // this.amount = Number(this.amount);
-
   next();
 });
 
