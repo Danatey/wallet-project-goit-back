@@ -10,7 +10,7 @@ const transactionSchema = new Schema(
     amount: {
       type: Number,
       require: true,
-      set: (data) => parseInt(data),
+      set: (data) => Number(data),
     },
     type: {
       type: String,
@@ -25,9 +25,6 @@ const transactionSchema = new Schema(
     date: {
       type: String,
       require: true,
-    },
-    day: {
-      type: Number,
     },
     month: {
       type: Number,
@@ -64,11 +61,9 @@ const transactionSchema = new Schema(
 
 transactionSchema.pre("save", function (next) {
   const formatedDate = new Date(this.date);
-  // this.date = Date.parse(formatedDate);
   this.year = formatedDate.getFullYear();
   this.month = formatedDate.getMonth() + 1;
-  // this.day = formatedDate.getDay();
-  this.amount = parseInt(this.amount);
+  // this.amount = Number(this.amount);
 
   next();
 });

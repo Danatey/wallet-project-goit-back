@@ -13,7 +13,7 @@ const createTransaction = async (req, res, next) => {
   try {
     const { _id: userId, balance } = req.user;
     const { amount, type } = req.body;
-    const amountNumber = parseInt(amount);
+    const amountNumber = Number(amount);
 
     const transactionBalance = countBalance(type, balance, amountNumber);
 
