@@ -95,18 +95,14 @@ const getTransactionsByCategory = async (req, res) => {
   });
 };
 
-const getIncomeCategory = (req, res) =>
+const getCategoriesList = (req, res) =>
   res.status(HttpCode.OK).json({
     status: "OK",
     code: HttpCode.OK,
-    data: TransactionsCategoryIncome,
-  });
-
-const getExpanceCategory = (req, res) =>
-  res.status(HttpCode.OK).json({
-    status: "OK",
-    code: HttpCode.OK,
-    data: TransactionsCategoryExpance,
+    data: {
+      expenses: TransactionsCategoryExpance,
+      incomes: TransactionsCategoryIncome,
+    },
   });
 
 module.exports = {
@@ -114,6 +110,5 @@ module.exports = {
   getTransactions,
   getTransactionsByDate,
   getTransactionsByCategory,
-  getIncomeCategory,
-  getExpanceCategory,
+  getCategoriesList,
 };
