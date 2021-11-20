@@ -91,7 +91,7 @@ const getTransactionsByCategory = async (req, res) => {
   return res.status(HttpCode.OK).json({
     status: "OK",
     code: HttpCode.OK,
-    data: categoriesTotalBalance,
+    data: { categories: categoriesTotalBalance },
   });
 };
 
