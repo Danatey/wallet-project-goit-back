@@ -2,9 +2,12 @@ const Transaction = require("../repository/transactions");
 const User = require("../repository/users");
 const { HttpCode } = require("../config/constants");
 const countBalance = require("../helpers/countTransactionBalance");
+const balanceByCategories = require("../helpers/renderBalanceByCategories");
 
-// :DELETE after category schema will be created
-const { TransactionsCategory } = require("../config/constants");
+const {
+  TransactionsCategoryExpance,
+  TransactionsCategoryIncome,
+} = require("../config/constants");
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -48,14 +51,8 @@ const getTransactions = async (req, res) => {
 const getTransactionsByDate = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { year, month } = req.body;
 
-    const data = await Transaction.listTransactionsByDate(
-      userId,
-      req.query,
-      year,
-      month
-    );
+    const data = await Transaction.listTransactionsByDate(userId, req.query);
     return res.json({
       status: "success",
       code: HttpCode.OK,
@@ -68,36 +65,50 @@ const getTransactionsByDate = async (req, res) => {
 
 const getTransactionsByCategory = async (req, res) => {
   const userId = req.user._id;
-  const { year, month } = req.body;
-
+  const { year, month } = req.query;
   const categoriesBalances = await Transaction.listTransactionByCategories(
     userId,
     year,
     month
   );
   const transactionsWithBalance = [
-    ...TransactionsCategory,
+    ...TransactionsCategoryExpance,
     "totalIncome",
     "totalExpence",
   ];
-  const categoriesTotalBalance = transactionsWithBalance.reduce(
-    (acc, val) => ({
-      ...acc,
-      [val]: categoriesBalances[val] || 0,
-    }),
-    {}
+  const categoriesTotalBalance = balanceByCategories(
+    transactionsWithBalance,
+    categoriesBalances
   );
+  // const categoriesTotalBalance = transactionsWithBalance.reduce(
+  //   (acc, val) => ({
+  //     ...acc,
+  //     [val]: categoriesBalances[val] || 0,
+  //   }),
+  //   {}
+  // );
 
   return res.status(HttpCode.OK).json({
     status: "OK",
     code: HttpCode.OK,
-    data: categoriesTotalBalance,
+    data: { categories: categoriesTotalBalance },
   });
 };
+
+const getCategoriesList = (req, res) =>
+  res.status(HttpCode.OK).json({
+    status: "OK",
+    code: HttpCode.OK,
+    data: {
+      expenses: TransactionsCategoryExpance,
+      incomes: TransactionsCategoryIncome,
+    },
+  });
 
 module.exports = {
   createTransaction,
   getTransactions,
   getTransactionsByDate,
   getTransactionsByCategory,
+  getCategoriesList,
 };

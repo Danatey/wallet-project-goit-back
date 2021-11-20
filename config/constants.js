@@ -25,21 +25,28 @@ const RateLimitVariables = {
   rateLimit: 3,
 };
 
-const TransactionsCategory = [
-  "основной",
-  "еда",
-  "авто",
-  "развитие",
-  "дети",
-  "дом",
-  "образовние",
-  "остальные",
+const TransactionsCategoryExpance = [
+  "Продукты",
+  "Машина",
+  "Забота о себе",
+  "Забота о детях",
+  "Товары для дома",
+  "Образование",
+  "Досуг",
+  "Другие расходы",
 ];
+const TransactionsCategoryIncome = ["Регулярный доход", "Не регулярный доход"];
+
+const CurrentYear = new Date().getFullYear();
+const CurrentMonth = new Date().getMonth() + 1;
 
 module.exports = {
   ValidUserName,
   HttpCode,
   RateLimitVariables,
   ValidPassword,
-  TransactionsCategory,
+  TransactionsCategoryExpance,
+  TransactionsCategoryIncome,
+  CurrentYear,
+  CurrentMonth,
 };
