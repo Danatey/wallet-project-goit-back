@@ -80,13 +80,6 @@ const getTransactionsByCategory = async (req, res) => {
     transactionsWithBalance,
     categoriesBalances
   );
-  // const categoriesTotalBalance = transactionsWithBalance.reduce(
-  //   (acc, val) => ({
-  //     ...acc,
-  //     [val]: categoriesBalances[val] || 0,
-  //   }),
-  //   {}
-  // );
 
   return res.status(HttpCode.OK).json({
     status: "OK",
