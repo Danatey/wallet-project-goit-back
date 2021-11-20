@@ -1,6 +1,7 @@
 const countSummByTypes = (arr, typeTransaction) => {
   return arr.reduce(
-    (acc, { amount, type }) => (type === typeTransaction ? acc + amount : acc),
+    (acc, { amount, type }) =>
+      type === typeTransaction ? (acc * 100 + amount * 100) / 100 : acc,
     0
   );
 };

@@ -57,23 +57,8 @@ const listTransactionByCategories = async (
     month: month,
   });
   const categoryBalance = countCategoriesBalance(transactions);
-  // const categoryBalance = transactions.reduce(
-  //   (acc, { category, amount }) => ({
-  //     ...acc,
-  //     [category]: acc[category] ? acc[category] + amount : amount,
-  //   }),
-  //   {}
-  // );
   const totalIncome = countSummByTypes(transactions, "+");
   const totalExpence = countSummByTypes(transactions, "-");
-  // const totalIncome = transactions.reduce(
-  //   (acc, { amount, type }) => (type === "+" ? acc + amount : acc),
-  //   0
-  // );
-  // const totalExpence = transactions.reduce(
-  //   (acc, { amount, type }) => (type === "-" ? acc + amount : acc),
-  //   0
-  // );
 
   const result = {
     ...categoryBalance,
