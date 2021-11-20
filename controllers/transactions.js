@@ -1,6 +1,10 @@
 const Transaction = require("../repository/transactions");
 const User = require("../repository/users");
-const { HttpCode } = require("../config/constants");
+const {
+  HttpCode,
+  ExpenseBalanceName,
+  IncomeBalanceName,
+} = require("../config/constants");
 const countBalance = require("../helpers/countTransactionBalance");
 const balanceByCategories = require("../helpers/renderBalanceByCategories");
 
@@ -48,21 +52,6 @@ const getTransactions = async (req, res) => {
   }
 };
 
-const getTransactionsByDate = async (req, res) => {
-  try {
-    const userId = req.user._id;
-
-    const data = await Transaction.listTransactionsByDate(userId, req.query);
-    return res.json({
-      status: "success",
-      code: HttpCode.OK,
-      data: { ...data },
-    });
-  } catch (err) {
-    console.log(err.message);
-  }
-};
-
 const getTransactionsByCategory = async (req, res) => {
   const userId = req.user._id;
   const { year, month } = req.query;
@@ -73,8 +62,8 @@ const getTransactionsByCategory = async (req, res) => {
   );
   const transactionsWithBalance = [
     ...TransactionsCategoryExpance,
-    "totalIncome",
-    "totalExpence",
+    IncomeBalanceName,
+    ExpenseBalanceName,
   ];
   const categoriesTotalBalance = balanceByCategories(
     transactionsWithBalance,
@@ -101,7 +90,6 @@ const getCategoriesList = (req, res) =>
 module.exports = {
   createTransaction,
   getTransactions,
-  getTransactionsByDate,
   getTransactionsByCategory,
   getCategoriesList,
 };

@@ -21,31 +21,6 @@ const addTransaction = async (body) => {
   return result;
 };
 
-const listTransactionsByDate = async (userId, query) => {
-  const {
-    limit = 5,
-    page = 1,
-    year = CurrentYear,
-    month = CurrentMonth,
-  } = query;
-  const searchOptions = {
-    owner: userId,
-    year: year,
-    month: month,
-    query,
-  };
-  const results = await Transaction.paginate(searchOptions, {
-    limit,
-    page,
-    year,
-    month,
-    sort: { date: "desc" },
-  });
-  const { docs: result } = results;
-  delete results.docs;
-  return { ...results, result };
-};
-
 const listTransactionByCategories = async (
   userId,
   year = CurrentYear,
@@ -72,5 +47,4 @@ module.exports = {
   addTransaction,
   listTransactions,
   listTransactionByCategories,
-  listTransactionsByDate,
 };
