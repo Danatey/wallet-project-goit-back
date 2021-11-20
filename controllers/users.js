@@ -44,14 +44,14 @@ const login = async (req, res, next) => {
   }
   const id = user._id;
   const payload = { id };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
-  const refreshToken = uuid({ expiresIn: '1h' });
-  await Users.updateToken(id, token, refreshToken);
+  const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+  const refreshToken = uuid();
+  await Users.updateToken(id, accessToken, refreshToken);
   return res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
     data: {
-      token,
+      access_token: accessToken,
       refresh_token: refreshToken,
     },
   });
@@ -86,7 +86,7 @@ const currentUser = async (req, res, next) => {
 const refreshTokens = async (req, res, next) => {
   const { refreshToken } = req.body;
     const user = await Users.findByRefreshToken(refreshToken);
-    if (!user) {
+    if (!user || refreshToken !== user.refreshToken) {
     return res.status(HttpCode.UNAUTORIZED).json({
       status: 'error',
       code: HttpCode.UNAUTORIZED,
@@ -94,17 +94,16 @@ const refreshTokens = async (req, res, next) => {
     });
   }
   try {
-    console.log(user);
     const id = user._id;
     const payload = { id };
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
-    const refreshToken = uuid({ expiresIn: '1h' });
-    await Users.updateToken(id, token, refreshToken);
+    const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+    const refreshToken = uuid();
+    await Users.updateToken(id, accessToken, refreshToken);
     return res.status(HttpCode.OK).json({
       status: 'success',
       code: HttpCode.OK,
       data: {
-        token,
+        access_token: accessToken,
         refresh_token: refreshToken,
       },
     });

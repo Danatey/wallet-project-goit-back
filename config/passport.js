@@ -16,7 +16,7 @@ passport.use(
         if (!user) {
           return done(new Error('User not found'), false);
           }
-          if (!user.token) {
+          if (!user.accessToken) {
             return done(null, false);
           }
           return done(null, user);

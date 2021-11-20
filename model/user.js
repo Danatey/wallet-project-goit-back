@@ -28,7 +28,7 @@ const userSchema = new Schema(
       type: Object,
     },
 
-    token: {
+    accessToken: {
       type: String,
       default: null,
     },
