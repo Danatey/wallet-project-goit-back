@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { validateTransaction } = require("./validation");
 
 const {
   createTransaction,
@@ -11,7 +12,7 @@ const {
 const quard = require("../../helpers/guard");
 
 router.get("/", quard, getTransactions);
-router.post("/create", quard, createTransaction);
+router.post("/create", quard, validateTransaction, createTransaction);
 router.get("/categories", quard, getTransactionsByCategory);
 router.get("/list", getCategoriesList);
 

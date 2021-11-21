@@ -9,7 +9,7 @@ const listTransactions = async (userId, query) => {
   const results = await Transaction.paginate(searchOptions, {
     limit,
     page,
-    sort: { date: "desc" },
+    sort: { date: "desc", createdAt: "desc" },
   });
   const { docs: result } = results;
   delete results.docs;
@@ -36,9 +36,8 @@ const listTransactionByCategories = async (
   const totalExpence = countSummByTypes(transactions, "-");
 
   const result = {
-    ...categoryBalance,
-    totalExpence: totalExpence,
-    totalIncome: totalIncome,
+    category: { ...categoryBalance },
+    total: { Доходы: totalIncome, Расходы: totalExpence },
   };
   return result;
 };
