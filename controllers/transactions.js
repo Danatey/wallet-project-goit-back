@@ -2,16 +2,13 @@ const Transaction = require("../repository/transactions");
 const User = require("../repository/users");
 const {
   HttpCode,
+  TransactionsCategoryExpance,
+  TransactionsCategoryIncome,
   ExpenseBalanceName,
   IncomeBalanceName,
 } = require("../config/constants");
 const countBalance = require("../helpers/countTransactionBalance");
 const balanceByCategories = require("../helpers/renderBalanceByCategories");
-
-const {
-  TransactionsCategoryExpance,
-  TransactionsCategoryIncome,
-} = require("../config/constants");
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -60,20 +57,22 @@ const getTransactionsByCategory = async (req, res) => {
     year,
     month
   );
-  const transactionsWithBalance = [
-    ...TransactionsCategoryExpance,
-    IncomeBalanceName,
-    ExpenseBalanceName,
-  ];
-  const categoriesTotalBalance = balanceByCategories(
+  const transactionsWithBalance = [...TransactionsCategoryExpance];
+  const transactionsTotal = [ExpenseBalanceName, IncomeBalanceName];
+  const categoriesBalance = balanceByCategories(
     transactionsWithBalance,
-    categoriesBalances
+    categoriesBalances.category
+  );
+
+  const totalBalance = balanceByCategories(
+    transactionsTotal,
+    categoriesBalances.total
   );
 
   return res.status(HttpCode.OK).json({
     status: "OK",
     code: HttpCode.OK,
-    data: { categories: categoriesTotalBalance },
+    data: { data: categoriesBalance, sumIncome: totalBalance },
   });
 };
 

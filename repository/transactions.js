@@ -36,9 +36,8 @@ const listTransactionByCategories = async (
   const totalExpence = countSummByTypes(transactions, "-");
 
   const result = {
-    ...categoryBalance,
-    totalExpence: totalExpence,
-    totalIncome: totalIncome,
+    category: { ...categoryBalance },
+    total: { Расходы: totalExpence, Доходы: totalIncome },
   };
   return result;
 };
