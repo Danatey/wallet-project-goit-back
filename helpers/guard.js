@@ -12,6 +12,22 @@ const guard = (req, res, next) => {
         message: 'Invalid credentials',
       });
     }
+    console.log(error)
+    if (error.code = 500) {
+      return res.status(HttpCode.NO_CONTENT).json({
+            status: 'error',
+            code: HttpCode.NO_CONTENT,
+            message: 'Reloade token',
+          });
+    }
+    // else {
+    //   return res.status(HttpCode.NO_CONTENT).json({
+    //     status: 'error',
+    //     code: HttpCode.NO_CONTENT,
+    //     message: 'Reloade token',
+    //   });
+    // };
+    
     req.user = user;
     return next();
   })(req, res, next);

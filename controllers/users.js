@@ -44,7 +44,7 @@ const login = async (req, res, next) => {
   }
   const id = user._id;
   const payload = { id };
-  const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+  const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '60000ms' });
   const refreshToken = uuid();
   await Users.updateToken(id, accessToken, refreshToken);
   return res.status(HttpCode.OK).json({
@@ -96,7 +96,7 @@ const refreshTokens = async (req, res, next) => {
   try {
     const id = user._id;
     const payload = { id };
-    const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+    const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: '60000ms' });
     const refreshToken = uuid();
     await Users.updateToken(id, accessToken, refreshToken);
     return res.status(HttpCode.OK).json({
