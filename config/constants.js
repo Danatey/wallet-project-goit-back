@@ -42,6 +42,9 @@ const TransactionsCategoryIncome = ["Регулярный доход", "Не р�
 const CurrentYear = new Date().getFullYear();
 const CurrentMonth = new Date().getMonth() + 1;
 
+const IncomeBalanceName = "totalIncome";
+const ExpenseBalanceName = "totalExpence";
+
 module.exports = {
   ValidUserName,
   HttpCode,
@@ -51,4 +54,6 @@ module.exports = {
   TransactionsCategoryIncome,
   CurrentYear,
   CurrentMonth,
+  IncomeBalanceName,
+  ExpenseBalanceName,
 };
