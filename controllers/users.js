@@ -59,6 +59,8 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   const id = req.user._id;
+  const refreshToken = req.user.refreshToken;
+  Users.addTokenInBlackList(refreshToken);
   await Users.updateToken(id, null, null);
   return res.status(HttpCode.NO_CONTENT).json({});
 };
