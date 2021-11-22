@@ -10,11 +10,11 @@ const SECRET_KEY = process.env.JWT_SECRET_KEY;
 const guard = async (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (error, user) => {
     const accessToken = req.get('Authorization')?.split(' ')[1];
-    const token = accessToken;
-    console.log(accessToken)
+    const token = user.accessToken;
     console.log(user)
-    const blackListToken = Tokens.findBlackToken(accessToken);
-    console.log(blackListToken.accessToken)
+    console.log(token)
+    const blackListToken = Tokens.findBlackToken(token);
+    console.log(blackListToken)
     // if (blackListToken.accessToken === accessToken) {
     //   return res.status(HttpCode.UNABLE_TO_PARSE_TOKEN).json({
     //     status: 'error',

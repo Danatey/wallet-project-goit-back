@@ -18,7 +18,7 @@ const loginLimit = require('../../helpers/rate-limit-login');
 router.post('/signup', validateUserSignup, signup);
 router.post('/login', loginLimit, validateUserLogin, login);
 router.post('/logout', guard, logout);
-router.get('/info', checkToken, guard, currentUser);
+router.get('/info', guard, currentUser);
 router.post('/refresh-tokens', refreshTokens);
 
 module.exports = router;
