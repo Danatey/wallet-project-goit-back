@@ -37,7 +37,7 @@ const TransactionsCategoryExpance = [
   "Досуг",
   "Другие расходы",
 ];
-const TransactionsCategoryIncome = ["Регулярный доход", "Не регулярный доход"];
+const TransactionsCategoryIncome = ["Регулярный доход", "Нерегулярный доход"];
 
 const CurrentYear = new Date().getFullYear();
 const CurrentMonth = new Date().getMonth() + 1;
