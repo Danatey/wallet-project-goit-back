@@ -7,6 +7,10 @@ const ValidPassword = {
   MIN_PASSWORD_LENGTH: 8,
 };
 
+const tokenExpires = {
+  ACCESS_TOKEN_EXPIRES: "1h",
+};
+
 const HttpCode = {
   OK: 200,
   CREATED: 201,
@@ -19,6 +23,7 @@ const HttpCode = {
   TOO_MANY_REQUESTS: 429,
   ACCESS_TOKEN_EXPIRED: 432,
   UNABLE_TO_PARSE_TOKEN: 433,
+  TOKEN_IS_ALREADY_USED: 436,
   INTERNAL_SERVER_ERROR: 500,
 };
 
@@ -48,6 +53,7 @@ const ExpenseBalanceName = "totalExpence";
 module.exports = {
   ValidUserName,
   HttpCode,
+  tokenExpires,
   RateLimitVariables,
   ValidPassword,
   TransactionsCategoryExpance,

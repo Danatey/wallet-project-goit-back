@@ -1,6 +1,6 @@
 const Users = require("../repository/users");
 const Tokens = require("../repository/tokens");
-const { HttpCode } = require("../config/constants");
+const { HttpCode, tokenExpires } = require("../config/constants");
 const jwt = require("jsonwebtoken");
 const { uuid } = require("uuidv4");
 require("dotenv").config();
@@ -45,7 +45,7 @@ const login = async (req, res, next) => {
   }
   const id = user._id;
   const payload = { id };
-  const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+  const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: tokenExpires.ACCESS_TOKEN_EXPIRES });
   const refreshToken = uuid();
   await Users.updateToken(id, accessToken, refreshToken);
   return res.status(HttpCode.OK).json({
@@ -95,9 +95,9 @@ const refreshTokens = async (req, res, next) => {
   const blackListToken = await Tokens.findBlackToken( refreshToken );
   console.log(blackListToken)
     if (blackListToken) {
-      return res.status(HttpCode.UNABLE_TO_PARSE_TOKEN).json({
+      return res.status(HttpCode.TOKEN_IS_ALREADY_USED).json({
         status: 'error',
-        code: HttpCode.UNABLE_TO_PARSE_TOKEN,
+        code: HttpCode.TOKEN_IS_ALREADY_USED,
         message: 'This token is already used',
       });
     }

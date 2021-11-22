@@ -12,7 +12,6 @@ const {
   refreshTokens,
   } = require("../../controllers/users");
 const guard = require('../../helpers/guard');
-const checkToken = require('../../helpers/tokenCheck');
 const loginLimit = require('../../helpers/rate-limit-login');
 
 router.post('/signup', validateUserSignup, signup);

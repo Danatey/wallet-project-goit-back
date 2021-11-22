@@ -1,5 +1,4 @@
 const { User } = require("../model/user");
-const { tokenBlackList } = require("../model/tokens-black-list");
 
 const findByEmail = async (email) => {
   return await User.findOne({ email });
@@ -26,14 +25,6 @@ const addBalance = async (id, balance) => {
   return await User.updateOne({ _id: id }, { balance });
 };
 
-const addTokenInBlackList = async (token) => {
-  return await tokenBlackList.insertMany({ token });
-};
-
-const findBlackToken = async (token) => {
-  return await tokenBlackList.findOne({ token });
-};
-
 module.exports = {
   findByEmail,
   create,
@@ -41,6 +32,4 @@ module.exports = {
   findById,
   findByRefreshToken,
   addBalance,
-  addTokenInBlackList,
-  findBlackToken
 };
