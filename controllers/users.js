@@ -1,4 +1,5 @@
 const Users = require("../repository/users");
+const Tokens = require("../repository/tokens");
 const { HttpCode } = require("../config/constants");
 const jwt = require("jsonwebtoken");
 const { uuid } = require("uuidv4");
@@ -60,7 +61,9 @@ const login = async (req, res, next) => {
 const logout = async (req, res, next) => {
   const id = req.user._id;
   const refreshToken = req.user.refreshToken;
-  Users.addTokenInBlackList(refreshToken);
+  const accessToken = req.user.accessToken;
+  Tokens.addTokenInBlackList(refreshToken);
+  Tokens.addTokenInBlackList(accessToken);
   await Users.updateToken(id, null, null);
   return res.status(HttpCode.NO_CONTENT).json({});
 };
@@ -89,6 +92,15 @@ const currentUser = async (req, res, next) => {
 
 const refreshTokens = async (req, res, next) => {
   const { refreshToken } = req.body;
+  const blackListToken = await Tokens.findBlackToken( refreshToken );
+  console.log(blackListToken)
+    if (blackListToken) {
+      return res.status(HttpCode.UNABLE_TO_PARSE_TOKEN).json({
+        status: 'error',
+        code: HttpCode.UNABLE_TO_PARSE_TOKEN,
+        message: 'This token is already used',
+      });
+    }
   const user = await Users.findByRefreshToken(refreshToken);
   if (!user || refreshToken !== user.refreshToken) {
     return res.status(HttpCode.UNAUTORIZED).json({
@@ -97,6 +109,7 @@ const refreshTokens = async (req, res, next) => {
       message: "Error, please login",
     });
   }
+  
   try {
     const id = user._id;
     const payload = { id };

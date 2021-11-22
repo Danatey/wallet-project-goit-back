@@ -27,8 +27,11 @@ const addBalance = async (id, balance) => {
 };
 
 const addTokenInBlackList = async (token) => {
-  const result = await tokenBlackList.create({ token });
-  return result;
+  return await tokenBlackList.insertMany({ token });
+};
+
+const findBlackToken = async (token) => {
+  return await tokenBlackList.findOne({ token });
 };
 
 module.exports = {
@@ -39,4 +42,5 @@ module.exports = {
   findByRefreshToken,
   addBalance,
   addTokenInBlackList,
+  findBlackToken
 };
