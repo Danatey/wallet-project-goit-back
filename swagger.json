@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "2.1.1",
+    "version": "2.2.1",
     "title": "Wallet API docs",
     "description": "API documentation for GoIT project 'Wallet'. [Backend github repository](https://github.com/Danatey/wallet-project-goit-back)",
     "license": {
@@ -218,7 +218,7 @@
         "parameters": [],
         "requestBody": {
           "description": "Transaction's object",
-          "required": true,
+          "required": false,
           "content": {
             "application/json": {
               "schema": {
@@ -316,7 +316,7 @@
         "parameters": [],
         "requestBody": {
           "description": "Transaction's object",
-          "required": true,
+          "required": false,
           "content": {
             "application/json": {
               "schema": {
@@ -494,20 +494,12 @@
         }
       },
       "AllTransactionsRequest": {
-        "required": [
-          "access_token"
-        ],
         "optional": [
           "year",
           "month"
         ],
         "type": "object",
         "properties": {
-          "access_token": {
-            "type": "string",
-            "description": "User's access_token. This token need add to headers Authorization: Bearer token",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTk0YjdkYzJiMzE2NGY5MjQ4ODNjYyIsImlhdCI6MTYzNzQzNjgyNywiZXhwIjoxNjM3NDQwNDI3fQ.C-oGS_NLFxd4A7AfysfWcW9SJP1kAleytL7MYclP4Y4"
-          },
           "year": {
             "type": "string",
             "description": "Optional. Number of year when transactions were payed. If the year wasn't indicated in URL-request string, the default data for the current year returned",
@@ -661,18 +653,15 @@
       "TransactionCreateRequest": {
         "type": "object",
         "required": [
-          "access_token",
           "date",
           "type",
           "category",
           "amount"
         ],
+        "optional": [
+          "comment"
+        ],
         "properties": {
-          "access_token": {
-            "type": "string",
-            "description": "User's access_token. This token need add to headers Authorization: Bearer token",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTk0YjdkYzJiMzE2NGY5MjQ4ODNjYyIsImlhdCI6MTYzNzQzNjgyNywiZXhwIjoxNjM3NDQwNDI3fQ.C-oGS_NLFxd4A7AfysfWcW9SJP1kAleytL7MYclP4Y4"
-          },
           "date": {
             "type": "string",
             "description": "Transaction's create date",
@@ -692,6 +681,11 @@
             "type": "string",
             "description": "Amount of transaction",
             "example": "500"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comment for transaction description",
+            "example": "Зароботная плата за январь"
           }
         }
       },
@@ -701,6 +695,7 @@
           "amount",
           "type",
           "category",
+          "comment",
           "date",
           "balance",
           "owner",
@@ -725,6 +720,11 @@
             "type": "string",
             "description": "Transaction's category",
             "example": "Регулярный доход"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comment for transaction description",
+            "example": "Зароботная плата за январь"
           },
           "date": {
             "type": "string",
@@ -769,20 +769,12 @@
         }
       },
       "TransactionsByCategoryRequest": {
-        "required": [
-          "access_token"
-        ],
         "optional": [
           "year",
           "month"
         ],
         "type": "object",
         "properties": {
-          "access_token": {
-            "type": "string",
-            "description": "User's access_token. This token need add to headers Authorization: Bearer token",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTk0YjdkYzJiMzE2NGY5MjQ4ODNjYyIsImlhdCI6MTYzNzQzNjgyNywiZXhwIjoxNjM3NDQwNDI3fQ.C-oGS_NLFxd4A7AfysfWcW9SJP1kAleytL7MYclP4Y4"
-          },
           "year": {
             "type": "string",
             "description": "Number of year when transactions of such category were payed. If the year wasn't indicated, then the default data for the current year returned",
@@ -877,17 +869,8 @@
         }
       },
       "UserInfoRequest": {
-        "required": [
-          "access_token"
-        ],
         "type": "object",
-        "properties": {
-          "access_token": {
-            "type": "string",
-            "description": "User's access_token. This token need add to headers Authorization: Bearer token",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTk0YjdkYzJiMzE2NGY5MjQ4ODNjYyIsImlhdCI6MTYzNzQzNjgyNywiZXhwIjoxNjM3NDQwNDI3fQ.C-oGS_NLFxd4A7AfysfWcW9SJP1kAleytL7MYclP4Y4"
-          }
-        }
+        "properties": {}
       },
       "UserInfoResponse": {
         "type": "object",
