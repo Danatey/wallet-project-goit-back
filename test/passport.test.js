@@ -14,7 +14,6 @@ describe('Unit test passport', () => {
   };
 
   beforeEach(() => {
-    // const payload = { id: 1 };
     Users.findById = jest.fn();
   });
 
@@ -30,6 +29,19 @@ describe('Unit test passport', () => {
     );
     const result = await passport.use;
     expect(result).toBeDefined();
-    // expect(next).toHaveBeenCalled();
+  });
+
+  test('User not exist', async () => {
+    const payload = { id: 1 };
+    passport.use = jest.fn(
+      new Strategy(params, async (payload, cb) => {
+        const user = await Users.findById(() => {
+          return undefined;
+        });
+        return cb(new Error('User not found'), false);
+      })
+    );
+    const result = await passport.use;
+    expect(result).toBeDefined();
   });
 });
