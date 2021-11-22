@@ -4,8 +4,20 @@ const newUserForRouteTransactions = {
 };
 
 const newUserForRouteUser = {
-  email: 'AndriiTest27@i.ua',
+  email: 'AndriiTest28@i.ua',
   password: '12345678',
 };
 
-module.exports = { newUserForRouteTransactions, newUserForRouteUser };
+const newTransaction = {
+  date: '2021-02-01',
+  type: '+',
+  category: 'Регулярный доход',
+  amount: '500',
+  comment: 'моя транзакция',
+};
+
+module.exports = {
+  newUserForRouteTransactions,
+  newUserForRouteUser,
+  newTransaction,
+};

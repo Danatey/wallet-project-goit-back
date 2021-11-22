@@ -1,14 +1,14 @@
-const Transaction = require("../repository/transactions");
-const User = require("../repository/users");
+const Transaction = require('../repository/transactions');
+const User = require('../repository/users');
 const {
   HttpCode,
   TransactionsCategoryExpance,
   TransactionsCategoryIncome,
   ExpenseBalanceName,
   IncomeBalanceName,
-} = require("../config/constants");
-const countBalance = require("../helpers/countTransactionBalance");
-const balanceByCategories = require("../helpers/renderBalanceByCategories");
+} = require('../config/constants');
+const countBalance = require('../helpers/countTransactionBalance');
+const balanceByCategories = require('../helpers/renderBalanceByCategories');
 
 const createTransaction = async (req, res, next) => {
   try {
@@ -26,7 +26,7 @@ const createTransaction = async (req, res, next) => {
       balance: transactionBalance,
     });
     return res.status(HttpCode.CREATED).json({
-      status: "success",
+      status: 'success',
       code: HttpCode.CREATED,
       data: { transaction },
     });
@@ -40,7 +40,7 @@ const getTransactions = async (req, res) => {
     const userId = req.user._id;
     const data = await Transaction.listTransactions(userId, req.query);
     return res.json({
-      status: "success",
+      status: 'success',
       code: HttpCode.OK,
       data: { ...data },
     });
@@ -70,22 +70,22 @@ const getTransactionsByCategory = async (req, res) => {
   );
 
   return res.status(HttpCode.OK).json({
-    status: "OK",
+    status: 'OK',
     code: HttpCode.OK,
     data: { data: categoriesBalance, sumIncome: totalBalance },
   });
 };
 
-const getCategoriesList = (req, res) =>
-  res.status(HttpCode.OK).json({
-    status: "OK",
+const getCategoriesList = (req, res) => {
+  return res.status(HttpCode.OK).json({
+    status: 'OK',
     code: HttpCode.OK,
     data: {
       expenses: TransactionsCategoryExpance,
       incomes: TransactionsCategoryIncome,
     },
   });
-
+};
 module.exports = {
   createTransaction,
   getTransactions,
