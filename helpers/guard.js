@@ -11,16 +11,17 @@ const guard = async (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (error, user) => {
     const accessToken = req.get('Authorization')?.split(' ')[1];
     const token = accessToken;
-    console.log(token)
+    console.log(accessToken)
+    console.log(user)
     const blackListToken = Tokens.findBlackToken(accessToken);
     console.log(blackListToken.accessToken)
-    if (blackListToken.accessToken === accessToken) {
-      return res.status(HttpCode.UNABLE_TO_PARSE_TOKEN).json({
-        status: 'error',
-        code: HttpCode.UNABLE_TO_PARSE_TOKEN,
-        message: 'This token is already used',
-      });
-    }
+    // if (blackListToken.accessToken === accessToken) {
+    //   return res.status(HttpCode.UNABLE_TO_PARSE_TOKEN).json({
+    //     status: 'error',
+    //     code: HttpCode.UNABLE_TO_PARSE_TOKEN,
+    //     message: 'This token is already used',
+    //   });
+    // }
     if (!user || error || accessToken !== user.accessToken) {
       jwt.verify(accessToken, SECRET_KEY, function (error, decoded) {
         if (error) {
