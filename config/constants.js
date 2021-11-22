@@ -29,7 +29,7 @@ const HttpCode = {
 
 const RateLimitVariables = {
   rateTime: 15 * 60 * 1000,
-  rateLimit: 3,
+  rateLimit: 10,
 };
 
 const TransactionsCategoryExpance = [
