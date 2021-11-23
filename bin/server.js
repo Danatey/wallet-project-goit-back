@@ -7,7 +7,6 @@ const { OAuth2Client } = require('google-auth-library');
 const PORT = process.env.PORT || 3001;
 const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
-// const app = express();
 app.use(express.json());
 
 const users = [];
