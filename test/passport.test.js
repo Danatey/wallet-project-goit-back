@@ -32,16 +32,23 @@ describe('Unit test passport', () => {
   });
 
   test('User not exist', async () => {
+    let response;
     const payload = { id: 1 };
     passport.use = jest.fn(
       new Strategy(params, async (payload, cb) => {
-        const user = await Users.findById(() => {
-          return undefined;
+        const user = await Users.findById((payload) => {
+          return false;
         });
         return cb(new Error('User not found'), false);
       })
     );
-    const result = await passport.use;
+
+    await passport.use;
+    const result = function cb() {
+      new Error('User not found');
+    };
+
     expect(result).toBeDefined();
+    expect(result).toBeInstanceOf(Function);
   });
 });

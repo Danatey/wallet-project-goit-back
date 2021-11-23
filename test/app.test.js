@@ -122,17 +122,19 @@ describe('Unit test for user"s router', () => {
   });
 
   test('More login requests', async () => {
-    const responseThree = await request(app)
+    for (let i = 0; i <= 8; i += 1) {
+      await request(app)
+        .post('/api/users/login')
+        .send(newUserForRouteUser)
+        .set('Accept', 'application|json');
+    }
+
+    const responseEleven = await request(app)
       .post('/api/users/login')
       .send(newUserForRouteUser)
       .set('Accept', 'application|json');
 
-    const responseFour = await request(app)
-      .post('/api/users/login')
-      .send(newUserForRouteUser)
-      .set('Accept', 'application|json');
-
-    expect(responseFour.status).toEqual(HttpCode.TOO_MANY_REQUESTS);
-    expect(responseFour.body).toBeDefined();
+    expect(responseEleven.status).toEqual(HttpCode.TOO_MANY_REQUESTS);
+    expect(responseEleven.body).toBeDefined();
   });
 });

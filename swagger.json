@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "2.2.1",
+    "version": "2.3.1",
     "title": "Wallet API docs",
     "description": "API documentation for GoIT project 'Wallet'. [Backend github repository](https://github.com/Danatey/wallet-project-goit-back)",
     "license": {
@@ -127,8 +127,8 @@
         ],
         "parameters": [],
         "requestBody": {
-          "description": "User's id",
-          "required": true,
+          "description": "Empty request",
+          "required": false,
           "content": {
             "application/json": {
               "schema": {
@@ -144,6 +144,55 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/LogoutResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No token provided",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized (invalid access token)",
+            "content": {}
+          },
+          "404": {
+            "description": "Invalid user / Invalid session",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/api/users/refresh-tokens": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update user's refresh token",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [],
+        "requestBody": {
+          "description": "Refresh token send in body",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponse"
                 }
               }
             }
@@ -490,6 +539,34 @@
             "type": "string",
             "code": 204,
             "example": "NO CONTENT"
+          }
+        }
+      },
+      "RefreshTokenRequest": {
+        "required": [
+          "refreshToken"
+        ],
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "description": "User's refresh token",
+            "example": "9a6661ee-4bd0-4339-a2b0-448650d0177a"
+          }
+        }
+      },
+      "RefreshTokenResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "description": "Session's access token (needed for all requests)",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1ZmMyMDg1YmQwOTM2NTI4MTA3Y2UyNzQiLCJzaWQiOiI1ZmMyZDJmY2UxZDIwNTA2NzAyYmRkMjIiLCJpYXQiOjE2MDY2MDM1MTYsImV4cCI6MTYwNjYwNzExNn0.rJ_QjU4KvA76H96RHsvOBChK0Vjbd0NmqjMxdQVJIXA"
+          },
+          "refresh_token": {
+            "type": "string",
+            "description": "Session's refresh token",
+            "example": "c3f8c5ca-c847-4dd0-9310-8801e1a84695"
           }
         }
       },
